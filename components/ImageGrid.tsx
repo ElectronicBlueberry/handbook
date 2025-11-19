@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const ImageGrid = ({ images, className, width }) => {
   const [openImg, setOpenImg] = useState(null);
@@ -6,24 +6,24 @@ const ImageGrid = ({ images, className, width }) => {
   const handleClose = () => setOpenImg(null);
 
   // If there's only one image, use one column; otherwise use up to two columns
-  const columns = images.length === 1 ? "1fr" : "repeat(2, 1fr)";
+  const columns = images.length === 1 ? '1fr' : 'repeat(2, 1fr)';
 
   return (
     <>
-      <div className={className ? className : "image-grid"}>
+      <div className={className ? className : 'image-grid'}>
         {images.map((src, index) => (
           <img
             key={index}
             src={src}
             alt={`Image ${index}`}
             style={{
-              width: width || "100%",
-              height: "auto",
-              border: "1px solid #eee",
-              borderRadius: "8px",
-              padding: "8px",
-              margin: "2rem 0",
-              cursor: "pointer",
+              width: width || '100%',
+              height: 'auto',
+              border: '1px solid #eee',
+              borderRadius: '8px',
+              padding: '8px',
+              margin: '2rem 0',
+              cursor: 'pointer',
             }}
             onClick={() => handleClick(src)}
           />
@@ -32,10 +32,7 @@ const ImageGrid = ({ images, className, width }) => {
 
       {/* Lightbox Overlay */}
       {openImg && (
-        <div
-          className="lightbox-overlay"
-          onClick={handleClose}
-        >
+        <div className="lightbox-overlay" onClick={handleClose}>
           <img src={openImg} alt="Enlarged" className="lightbox-image" />
         </div>
       )}

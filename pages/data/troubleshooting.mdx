@@ -3,36 +3,36 @@
 Having trouble connecting Embeddable to your database? Below are common issues and fixes.
 
 1. **Incorrect Credentials**
-    - Double-check your **username**, **password**, and **database name**.  
-    - Make sure the **host** and **port** match your database configuration.
-    - Sometimes, if your database password contains special characters such as backslashes (`\`), you may need to escape them properly. For instance, a password like `J\c\X` should be written as `J\\c\\X`.
+   - Double-check your **username**, **password**, and **database name**.
+   - Make sure the **host** and **port** match your database configuration.
+   - Sometimes, if your database password contains special characters such as backslashes (`\`), you may need to escape them properly. For instance, a password like `J\c\X` should be written as `J\\c\\X`.
 
-2. **Firewall or Network Restrictions** 
-    - Ensure your database server allows incoming connections from Embeddable’s IP addresses ([details here](/deployment/deployment-regions#ips-to-whitelist)).  
-    - If you’re hosting on-prem or behind a VPN, confirm that Embeddable can reach the server.
+2. **Firewall or Network Restrictions**
+   - Ensure your database server allows incoming connections from Embeddable’s IP addresses ([details here](/deployment/deployment-regions#ips-to-whitelist)).
+   - If you’re hosting on-prem or behind a VPN, confirm that Embeddable can reach the server.
 
-3. **SSL or TLS Requirements**  
-   - Some databases require SSL. Confirm that you’ve enabled `ssl: true` (or relevant SSL parameters) [in your credentials](./credentials) if needed.  
+3. **SSL or TLS Requirements**
+   - Some databases require SSL. Confirm that you’ve enabled `ssl: true` (or relevant SSL parameters) [in your credentials](./credentials) if needed.
    - Check your certificates and ensure the SSL configuration matches your DB server’s setup.
 
-4. **Version Mismatch**  
-   - Make sure your database version is supported by [Cube](https://cube.dev/docs/product/configuration/data-sources). 
+4. **Version Mismatch**
+   - Make sure your database version is supported by [Cube](https://cube.dev/docs/product/configuration/data-sources).
    - Older versions of certain databases may have quirks or missing features that affect connecting to Embeddable.
 
-5. **Missing Tables or Schemas**  
-   - If a query returns “table not found,” confirm that `sql_table` or `sql` references the correct schema/table names.  
+5. **Missing Tables or Schemas**
+   - If a query returns “table not found,” confirm that `sql_table` or `sql` references the correct schema/table names.
    - Check that the **user** you've used when connecting has the right **permissions** to access those tables.
 
-6. **Data Source Configuration**  
+6. **Data Source Configuration**
    - In your model file (`<name>.cube.yml`), verify the `data_source` field references the correct connection in your settings (omitting the `data_source` field defaults to a demo connection named `default`).
    - If you have multiple connections, confirm you’re using the right one.
 
-7. **Security Context Settings**  
-   - If row-level security is blocking access, ensure your **securityContext** is correct.  
+7. **Security Context Settings**
+   - If row-level security is blocking access, ensure your **securityContext** is correct.
    - Review any `WHERE` clauses referencing `COMPILE_CONTEXT.securityContext` to confirm values are passed properly.
 
-8. **Connection URL Format**  
-   - For databases like Redshift, Snowflake, or MS SQL, small typos in the URL or host can cause “connection refused” errors.  
+8. **Connection URL Format**
+   - For databases like Redshift, Snowflake, or MS SQL, small typos in the URL or host can cause “connection refused” errors.
    - Compare your connection string against sample configurations in our docs.
 
 ### Still Stuck?

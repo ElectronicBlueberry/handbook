@@ -1,15 +1,18 @@
-import React from "react";
+import React from 'react';
 
-const ExternalVideo = ({ src, width = "100%", height = "500px", className, style }) => {
+const ExternalVideo = ({ src, width = '100%', height = '500px', className, style }) => {
   return (
-    <div style={{
-      marginTop: "20px",
-      border: "1px solid #eee",
-      borderRadius: "8px",
-      margin: "2rem 0",
-      padding: "8px",
-      ...style 
-      }} className={className}>
+    <div
+      style={{
+        marginTop: '20px',
+        border: '1px solid #eee',
+        borderRadius: '8px',
+        margin: '2rem 0',
+        padding: '8px',
+        ...style,
+      }}
+      className={className}
+    >
       <iframe
         src={src}
         frameBorder="0"
@@ -18,9 +21,9 @@ const ExternalVideo = ({ src, width = "100%", height = "500px", className, style
         style={{
           width: width,
           height: height,
-          borderRadius: "1px",
-          pointerEvents: "auto",
-          backgroundColor: "white",
+          borderRadius: '1px',
+          pointerEvents: 'auto',
+          backgroundColor: 'white',
         }}
       ></iframe>
     </div>

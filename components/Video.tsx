@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const VideoComponent = ({ src, width = 16, height = 9, className }) => {
   // Calculate aspect ratio for padding-top
@@ -7,21 +7,21 @@ const VideoComponent = ({ src, width = 16, height = 9, className }) => {
   return (
     <div
       style={{
-        border: "1px solid #eee",
-        borderRadius: "8px",
-        margin: "2rem auto",
-        padding: "8px",
-        width: width ? `${width}px` : "100%",
-        maxWidth: "100%",
+        border: '1px solid #eee',
+        borderRadius: '8px',
+        margin: '2rem auto',
+        padding: '8px',
+        width: width ? `${width}px` : '100%',
+        maxWidth: '100%',
       }}
     >
       <div
         className={className}
         style={{
-          position: "relative",
-          width: "100%",
+          position: 'relative',
+          width: '100%',
           paddingTop: `${aspectRatio}%`,
-          overflow: "hidden",
+          overflow: 'hidden',
         }}
       >
         <video
@@ -31,12 +31,12 @@ const VideoComponent = ({ src, width = 16, height = 9, className }) => {
           muted
           loop
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
           }}
         />
       </div>

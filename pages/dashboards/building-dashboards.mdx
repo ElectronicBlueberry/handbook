@@ -1,31 +1,34 @@
 # Building Dashboards
 
 <LinkCard
-   title="Follow a walkthough to create your first dashboard"
-   href="/getting-started/first-embeddable"
-   arrow
+  title="Follow a walkthough to create your first dashboard"
+  href="/getting-started/first-embeddable"
+  arrow
 />
 
+In Embeddable’s no-code builder, **two primary building blocks** form the basis of every dashboard:
 
-In Embeddable’s no-code builder, **two primary building blocks** form the basis of every dashboard: 
-- **Datasets**: the data you want to show. 
-- **Components**: your charting visualizations.   
+- **Datasets**: the data you want to show.
+- **Components**: your charting visualizations.
 
 By mixing and matching them on the canvas you can quickly create powerful, reusable dashboards.
 
 ## Datasets
 
 **Datasets** are simply a named **data model** with optional **filters** applied. For example, you might have:
+
 - A **Customers** dataset based on your `customers` data model.
 - A **High-Spend Customers** dataset that applies a filter on the `customers` model.
-- An **Orders** dataset based on an `orders` data model. 
+- An **Orders** dataset based on an `orders` data model.
 
 You **define a dataset** in the Embeddable no-code builder by clicking the [+] in the Datasets section in the bottom right.
 
-<ImageGrid images={["/img/dataset-builder-min.png"]}/>
+<ImageGrid images={['/img/dataset-builder-min.png']} />
 
 <Callout emoji="💡">
-  Because data models include [row-level security rules](/data-modeling/row-level-security) and transformations, everyone sees the right data automatically, so this **isn't something you need to consider** in the no-code builder. 
+  Because data models include [row-level security rules](/data-modeling/row-level-security) and
+  transformations, everyone sees the right data automatically, so this **isn't something you need to
+  consider** in the no-code builder.
 </Callout>
 
 ## Components
@@ -35,11 +38,11 @@ Components are **visual or interactive elements** - charts, tables, dropdowns, t
 - **Prompt for Inputs**: Such as which dimension to use along the x-axis, or the title.
 - **No-code**: No code is needed in the builder. You just fill in the fields.
 
-<ImageGrid images={["/img/add-components-min.png"]}/>
+<ImageGrid images={['/img/add-components-min.png']} />
 
 ## The Canvas
 
-When you add or reposition components, Embeddable’s **canvas** automatically arranges them based on a *12-column grid layout** with a few key properties:
+When you add or reposition components, Embeddable’s **canvas** automatically arranges them based on a \*12-column grid layout\*\* with a few key properties:
 
 - **Drag-and-Drop**: Move any component around, and the canvas will slot it into the nearest open space.
 - **Upwards Gravity**: If there’s empty space above a component, it will shift upward automatically.
@@ -48,5 +51,4 @@ When you add or reposition components, Embeddable’s **canvas** automatically a
 
 This lets you focus on **what** goes into your dashboard rather than fussing with positioning details or media queries.
 
-<ImageGrid images={["/img/canvas-drag-min.png"]}/>
-
+<ImageGrid images={['/img/canvas-drag-min.png']} />

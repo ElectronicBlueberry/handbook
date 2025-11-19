@@ -50,7 +50,7 @@ views:
   - name: customers_view
     cubes:
       - join_path: customers
-        includes: "*"
+        includes: '*'
     access_policy:
       - role: customer
         member_level:
@@ -59,7 +59,7 @@ views:
           filters:
             - member: user_id
               operator: equals
-              values: ["{ securityContext.user_key }"]
+              values: ['{ securityContext.user_key }']
 ```
 
 **Generated SQL:**
@@ -74,7 +74,7 @@ SELECT * FROM public.customers WHERE user_id = '123';
 
 - The `customers_view` brings in all columns from the `customers` model. The access policy is applied at the view level, so you only need to define it once instead of repeating it across every model. Learn more about views [here](/data-modeling/views).
 - The role `customer` is taken from the token. Think of roles as simple tags you attach to a user. The user’s access is the **UNION** of all policies for the roles in their token.
-    - For example, if a user is granted both `Finance Ops` and `Developer Ops` roles, they will see all the data available to Finance Ops **plus** all the data available to Developer Ops.
+  - For example, if a user is granted both `Finance Ops` and `Developer Ops` roles, they will see all the data available to Finance Ops **plus** all the data available to Developer Ops.
 - The filter matches the `user_id` in the cube to the `user_key` from the token.
 - Policies apply at query time, so no recompilation is needed.
 
@@ -96,13 +96,12 @@ Defines which role a policy applies to.
 access_policy:
   - role: default
     conditions:
-      - if: "{ securityContext.is_full_time_employee }"
+      - if: '{ securityContext.is_full_time_employee }'
     row_level:
       filters:
         - member: user_id
           operator: equals
-          values: ["{ securityContext.user_key }"]
-
+          values: ['{ securityContext.user_key }']
 ```
 
 If `is_full_time_employee` is true, this policy applies. Otherwise, it is ignored.
@@ -118,8 +117,7 @@ row_level:
   filters:
     - member: country
       operator: equals
-      values: ["Denmark"]
-
+      values: ['Denmark']
 ```
 
 **member**
@@ -130,30 +128,30 @@ row_level:
 
 `operator` defines how the filter should compare the field to the values. For example, `equals` checks for exact matches, `notSet` checks for nulls.
 
-| Operator | Explanation |
-| --- | --- |
-| `equals` | Member equals the given value(s). |
-| `notEquals` | Member does not equal the given value(s). |
-| `contains` | Case-insensitive substring match. |
-| `notContains` | Inverse of contains. |
-| `startsWith` | Prefix match. |
-| `notStartsWith` | Inverse of startsWith. |
-| `endsWith` | Suffix match. |
-| `notEndsWith` | Inverse of endsWith. |
-| `gt` | Greater than a numeric value. |
-| `gte` | Greater than or equal to a numeric value. |
-| `lt` | Less than a numeric value. |
-| `lte` | Less than or equal to a numeric value. |
-| `inDateRange` | Time member is within the given range. |
-| `notInDateRange` | Excludes rows within the given range. |
-| `onTheDate` | Member is on the exact date provided. |
-| `beforeDate` | Strictly before the given timestamp. |
-| `beforeOrOnDate` | Before or on the given timestamp. |
-| `afterDate` | Strictly after the given timestamp. |
-| `afterOrOnDate` | After or on the given timestamp. |
-| `set` | Member is **NOT NULL** (omit `values`). |
-| `notSet` | Member is **NULL** (omit `values`). |
-| `measureFilter` | Applies measure filters in drill downs. |
+| Operator         | Explanation                               |
+| ---------------- | ----------------------------------------- |
+| `equals`         | Member equals the given value(s).         |
+| `notEquals`      | Member does not equal the given value(s). |
+| `contains`       | Case-insensitive substring match.         |
+| `notContains`    | Inverse of contains.                      |
+| `startsWith`     | Prefix match.                             |
+| `notStartsWith`  | Inverse of startsWith.                    |
+| `endsWith`       | Suffix match.                             |
+| `notEndsWith`    | Inverse of endsWith.                      |
+| `gt`             | Greater than a numeric value.             |
+| `gte`            | Greater than or equal to a numeric value. |
+| `lt`             | Less than a numeric value.                |
+| `lte`            | Less than or equal to a numeric value.    |
+| `inDateRange`    | Time member is within the given range.    |
+| `notInDateRange` | Excludes rows within the given range.     |
+| `onTheDate`      | Member is on the exact date provided.     |
+| `beforeDate`     | Strictly before the given timestamp.      |
+| `beforeOrOnDate` | Before or on the given timestamp.         |
+| `afterDate`      | Strictly after the given timestamp.       |
+| `afterOrOnDate`  | After or on the given timestamp.          |
+| `set`            | Member is **NOT NULL** (omit `values`).   |
+| `notSet`         | Member is **NULL** (omit `values`).       |
+| `measureFilter`  | Applies measure filters in drill downs.   |
 
 Authoritative list of operators is [here](https://github.com/cube-js/cube/blob/master/packages/cubejs-schema-compiler/src/compiler/CubeValidator.ts#L712-L735).
 
@@ -205,7 +203,7 @@ access_policy:
       filters:
         - member: department
           operator: equals
-          values: ["{ securityContext.department }"]
+          values: ['{ securityContext.department }']
 ```
 
 In this example:
@@ -226,7 +224,7 @@ Sometimes you may still want to make this explicit in your model. You can do thi
 
 ```yaml
 access_policy:
-  - role: "*"
+  - role: '*'
     member_level:
       includes: []
 
@@ -239,21 +237,21 @@ access_policy:
       filters:
         - member: department
           operator: equals
-          values: ["{ securityContext.department }"]
+          values: ['{ securityContext.department }']
 
   - role: manager
     member_level:
-      includes: "*"
+      includes: '*'
     row_level:
       filters:
         - member: department
           operator: equals
-          values: ["{ securityContext.department }"]
+          values: ['{ securityContext.department }']
 ```
 
 **Things to notice:**
 
-- The  role with `includes: []` removes access for all users by default.
+- The role with `includes: []` removes access for all users by default.
 - Only roles explicitly defined (`employee`, `manager`) are granted access.
 - The `manager` role also filters rows by department, but includes all fields in the model, including revenue-related measures.
 - This approach follows the principle of least privilege: start with no access, then grant access selectively.
@@ -289,25 +287,21 @@ Switch between different [security contexts](/data-modeling/row-level-security#t
 access_policy:
   - role: admin
     member_level:
-      includes: "*" 
+      includes: '*'
     row_level:
       allow_all: true
 
   - role: user
     member_level:
-      includes: "*" 
+      includes: '*'
     row_level:
       filters:
         - member: id
           operator: equals
-          values: ["{ securityContext.user_id }"]
+          values: ['{ securityContext.user_id }']
 ```
 
-<VideoComponent
-    src="/video/access_policies_example.mp4"
-    width="1920"
-    height="1080"
-/>
+<VideoComponent src="/video/access_policies_example.mp4" width="1920" height="1080" />
 
 ## Examples
 
@@ -334,7 +328,7 @@ access_policy:
       filters:
         - member: region
           operator: in
-          values: "{ securityContext.regions }"
+          values: '{ securityContext.regions }'
 ```
 
 **Generated SQL**
@@ -384,9 +378,9 @@ This example shows how to give administrators unrestricted access while still ap
 access_policy:
   - role: admin
     conditions:
-      - if: "{ securityContext.is_super_admin }"
+      - if: '{ securityContext.is_super_admin }'
     member_level:
-      includes: "*"
+      includes: '*'
     row_level:
       allow_all: true
 ```
@@ -413,27 +407,26 @@ filters:
       - and:
           - member: region
             operator: equals
-            values: ["North America"]
+            values: ['North America']
           - member: customer_status
             operator: equals
-            values: ["Active"]
+            values: ['Active']
       - and:
           - member: region
             operator: equals
-            values: ["Europe"]
+            values: ['Europe']
           - member: customer_status
             operator: equals
-            values: ["Active"]
+            values: ['Active']
   - member: subscription_tier
     operator: equals
-    values: ["Premium"]
-
+    values: ['Premium']
 ```
 
 **Generated SQL**
 
 ```sql
-WHERE ((region = 'North America' AND customer_status = 'Active') 
+WHERE ((region = 'North America' AND customer_status = 'Active')
        OR (region = 'Europe' AND customer_status = 'Active'))
 AND subscription_tier = 'Premium'
 ```

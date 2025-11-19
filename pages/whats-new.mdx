@@ -1,32 +1,29 @@
-
 # 🚀 What’s New in Embeddable
-
 
 ## September 2025
 
 We’ve been hard at work improving Embeddable! Here’s a roundup of the latest features and enhancements designed to help you build, manage, and secure dashboards more efficiently.
 
-### 1. Save dashboard and publish to different environments 
+### 1. Save dashboard and publish to different environments
 
 You can now save an Embeddable dashboard as a version and publish it to different environments. Publish dashboards to dev, staging, or prod, and even run it all through your CI/CD.
 
-<ImageGrid width='75%' images={["/img/publish-version.png"]}/>
+<ImageGrid width="75%" images={['/img/publish-version.png']} />
 
 Learn more about `Saving versions` [here](/dashboards/saving), and `Publishing dashboards` [here](/dashboards/publishing).
-
 
 ### 2. Workspace management
 
 Manage team member access to Embeddable workspace under 'Manage team' menu option.
 
-<ImageGrid width='75%' images={["/img/manage-team.png"]}/>
-
+<ImageGrid width="75%" images={['/img/manage-team.png']} />
 
 ### 3. Data Access Policies
 
 Access Policies make enforcing row-level security powerful, flexible, and safe. Reusable and applied at runtime, they support nested filters, role-based logic, and automatically guard against SQL injection.
 
 With Access Policies, you can:
+
 - Assign multiple roles per user without complex SQL workarounds
 - Apply conditional rules (e.g., only for admin users) easily
 - Build complex nested filters (AND/OR combinations) in a maintainable way
@@ -36,17 +33,13 @@ We continue to support traditional SQL-based RLS, but Access Policies make it ea
 
 Learn more about `Data Access Policies` [here](/data-modeling/access-policies).
 
-
-
 ### 4. Point at different Cube deployments
 
 Embeddable now lets you connect to multiple Cube deployments — either staging/preview branches or completely separate deployments — so you can test changes safely, manage different environments, and switch between data providers in the builder.
 
-
 Learn more about `Multiple Cube deployments` [here](/data/cube-cloud#testing-multiple-data-providers).
 
-
-### 5. Timezone support 
+### 5. Timezone support
 
 You can now set a specific timezone for Embeddable dashboards.
 
@@ -56,24 +49,21 @@ This ensures all users see data in a consistent “reporting timezone,” avoidi
 - Default timezone remains UTC for backwards compatibility and omitted values
 - Handles timezones globally, including daylight saving changes
 
-
 ### 6. Time granularity when choosing a time dimension
 
 Pick a time dimension and select granularity (second, minute, hour, day, week, month, quarter, year). Works in the chart builder or in data playground.
 
-<ImageGrid width='50%' images={["/img/time-granularity-small.png"]}/>
-
+<ImageGrid width="50%" images={['/img/time-granularity-small.png']} />
 
 ## July 2025
 
 In the last months we shipped several updates to make building and managing dashboards more intuitive and flexible. From improvements to the data modeling experience to new ways to configure inputs and control versioning, here’s a quick look at what’s new.
 
-
 ### 1. Data Model Editor
 
 You can now create and edit data models directly in Embeddable.
 
-<ImageGrid images={["/img/data-model-editor.png"]}/>
+<ImageGrid images={['/img/data-model-editor.png']} />
 
 #### Why it matters:
 
@@ -88,13 +78,11 @@ This makes it easier to define models and build dashboards faster, especially fo
 
 Learn more about `Data Model Editor` [here](/data-modeling/getting-setup).
 
-
-
 ### 2. Cube Version Picker
 
 Control exactly which **Cube.js version** your dashboards use.
 
-<ImageGrid width='50%' images={["/img/cube-version-picker.png"]}/>
+<ImageGrid width="50%" images={['/img/cube-version-picker.png']} />
 
 #### Why it matters:
 
@@ -106,12 +94,11 @@ Test safely before going live and avoid breaking changes from upstream Cube upda
 - Default is latest, but you can switch freely
 - Live embeddables only update after you publish with a selected version
 
-
 ### 3. Sub Inputs for Dimensions & Measures
 
 You can now define **custom sub inputs** per dimension or measure in chart configurations.
 
-<ImageGrid width='50%' images={["/img/sub-inputs.png"]}/>
+<ImageGrid width="50%" images={['/img/sub-inputs.png']} />
 
 #### Why it matters:
 
@@ -123,30 +110,23 @@ Allows specifying a number of additional settings (e.g. title / granularity / ro
 - Customize date formatting for time fields
 - Rename columns with user-friendly labels
 
-
 Learn more about `Sub Inputs for Dimensions & Measures` [here](/development/define-component-function#subinputmeta-definition)
-
 
 ### 4. Dimension & Measure Variables
 
 You can now use dimensions and measures as variables and link them directly as inputs to dashboard components.
 
-<VideoComponent
-    src="/video/dim-meas-vars-pie-example.mp4"
-    width="400"
-    height="459"
-/>
+<VideoComponent src="/video/dim-meas-vars-pie-example.mp4" width="400" height="459" />
 
 #### Why it matters:
 
-A popular feature that teams want to be able to implement is the ability to allow end-users to dynamically change the measures or dimensions that are being shown on a dashboard.  E.g. you could have a dropdown containing a list of dimensions or measures, and then when users switch to another dimension or measure, all the charts update to show that dimension or measure.  This is now easy to do in Embeddable.
+A popular feature that teams want to be able to implement is the ability to allow end-users to dynamically change the measures or dimensions that are being shown on a dashboard. E.g. you could have a dropdown containing a list of dimensions or measures, and then when users switch to another dimension or measure, all the charts update to show that dimension or measure. This is now easy to do in Embeddable.
 
 #### What’s new:
 
 - New variable types: “Dimension”, “Measure”, and “Dimension or Measure” available in the variable type dropdown.
 - Select from all available dimensions or measures across your models, with support for single or multi-select.
 - Easily link these variables as inputs to components, just like other variable types.
-
 
 Learn more about `Dimensions & Measures as variables` [here](/dashboards/interactivity#example-change-a-pie-charts-metrics-with-a-picker)
 

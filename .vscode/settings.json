@@ -1,6 +1,6 @@
 {
-    "files.associations": {
-        "*.mdx": "markdown"
-    },
-    "editor.wordWrap": "on"
+  "files.associations": {
+    "*.mdx": "markdown"
+  },
+  "editor.wordWrap": "on"
 }

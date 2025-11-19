@@ -4,6 +4,6 @@ const withNextra = require('nextra')({
   defaultShowCopyCode: true,
   // Ensure proper content revalidation
   incrementalCacheHandlerPath: false,
-})
+});
 
-module.exports = withNextra()
+module.exports = withNextra();

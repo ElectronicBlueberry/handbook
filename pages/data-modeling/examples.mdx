@@ -1,19 +1,20 @@
 # Examples: from SQL to Models
 
-In this section, we walk through examples that illustrate how to make the shift from writing SQL to modeling. 
+In this section, we walk through examples that illustrate how to make the shift from writing SQL to modeling.
 
 Here's a quick **mental model** to keep in mind:
 
-- **SQL asks**: *“How do I compute this number right now?”*
-- **Modeling asks**: *“What entities and metrics should always be available so my team, users, or customers can compute this (and related) numbers later, consistently?”*
+- **SQL asks**: _“How do I compute this number right now?”_
+- **Modeling asks**: _“What entities and metrics should always be available so my team, users, or customers can compute this (and related) numbers later, consistently?”_
 
 <Callout emoji="💡">
-    You can jumpstart modeling by clicking the **Ask AI** button (in the bottom right) and pasting in your SQL queries.
+  You can jumpstart modeling by clicking the **Ask AI** button (in the bottom right) and pasting in
+  your SQL queries.
 </Callout>
 
 ## Simple KPI examples
 
-Let's start with a small SaaS schema and simple KPIs to help you understand the base components. 
+Let's start with a small SaaS schema and simple KPIs to help you understand the base components.
 
 <Steps>
 
@@ -21,15 +22,16 @@ Let's start with a small SaaS schema and simple KPIs to help you understand the 
 
 Let's say we have a database with 4 tables:
 
-- **customers**: `id`, `name`, `email`, `country`, `created_at`  
-- **orders**: `id`, `customer_id`, `status`, `total_amount`, `created_at`  
-- **subscriptions**: `id`, `customer_id`, `status`, `plan_interval` (`'month'|'year'`), `monthly_price`, `started_at`, `canceled_at`  
+- **customers**: `id`, `name`, `email`, `country`, `created_at`
+- **orders**: `id`, `customer_id`, `status`, `total_amount`, `created_at`
+- **subscriptions**: `id`, `customer_id`, `status`, `plan_interval` (`'month'|'year'`), `monthly_price`, `started_at`, `canceled_at`
 - **events** (app usage): `id`, `customer_id`, `event_type`, `occurred_at`
 
 And, we're interested in KPIs like:
-- New signups  
-- Active customers / usage over time  
-- Completed orders & revenue (e.g., total revenue, revenue by country)  
+
+- New signups
+- Active customers / usage over time
+- Completed orders & revenue (e.g., total revenue, revenue by country)
 - “Simple MRR” (sum of `monthly_price` for active subscriptions)
 
 ---
@@ -52,6 +54,7 @@ ORDER BY total_revenue DESC;
 And, here's that SQL **translated** into reusable **data models**:
 
 1. `customers.cube.yml`
+
 ```yaml
 cubes:
   - name: customers
@@ -74,14 +77,15 @@ cubes:
       - name: created_at
         sql: created_at
         type: time
-    
+
     measures:
       - name: customers_count
         type: count
-        title: "# of Customers"
+        title: '# of Customers'
 ```
 
 2. `orders.cube.yml`
+
 ```yaml
 cubes:
   - name: orders
@@ -108,36 +112,35 @@ cubes:
     measures:
       - name: orders_count
         type: count
-        title: "# of Orders"
+        title: '# of Orders'
 
       - name: total_revenue
         sql: total_amount
         type: sum
-        title: "Total Revenue"
+        title: 'Total Revenue'
         filters:
-            - sql: "{CUBE}.status = 'completed'"
-    
+          - sql: "{CUBE}.status = 'completed'"
+
     joins:
       - name: customers
-        sql: "{CUBE}.customer_id = {customers}.id"
+        sql: '{CUBE}.customer_id = {customers}.id'
         relationship: many_to_one
-
 ```
 
-- These models enable us to recreate the “revenue by customer” query in Embeddable’s builder simply by selecting the `total_revenue` measure and the `customer_name` dimension. 
+- These models enable us to recreate the “revenue by customer” query in Embeddable’s builder simply by selecting the `total_revenue` measure and the `customer_name` dimension.
 - But the real power, along with centralizing our data logic, is that they unlock many other questions without writing new SQL:
-    - Revenue by country.
-    - Order volume trends over time
-    - Top customers by spend in the last 30 days
-    - Average order value per region.
+  - Revenue by country.
+  - Order volume trends over time
+  - Top customers by spend in the last 30 days
+  - Average order value per region.
 
 **Things to notice**
--  **No aggregations in the cube SQL** - the model definitions don’t SUM or GROUP BY. Aggregations come from measures (e.g. total_revenue with type: sum) and grouping comes from dimensions (e.g. customer_name) you select in the builder.
+
+- **No aggregations in the cube SQL** - the model definitions don’t SUM or GROUP BY. Aggregations come from measures (e.g. total_revenue with type: sum) and grouping comes from dimensions (e.g. customer_name) you select in the builder.
 - **Filters aren’t baked into the base dataset** - instead of `WHERE o.status = 'completed'` in the cube SQL, the example uses a filtered measure.
 - **Joins are modeled once, then reused** - the orders model declares a single join to customers. After that, any chart can use customer fields (customer_name, country) without rewriting the join.
 - **Sorting is a visualization concern** - the original SQL orders by `total_revenue DESC`. In Embeddable, you sort when needed in the builder, rather than hard-coding it in the model.
 - **The examples above use `sql_table`** - these are simple fact table examples. You use `sql` if your model relies on CTEs/window functions or you want a denormalized base.
-
 
 ### KPI: Revenue by country (last 30 days)
 
@@ -155,9 +158,10 @@ GROUP BY 1;
 ```
 
 And, you can use exactly the same models as with the first example (above), selecting the relevant properties in Embeddable's builder:
-- Measure: `orders.total_revenue`  
+
+- Measure: `orders.total_revenue`
 - Dimension: `customers.country`
-- Time window: filter `orders.created_at` to last 30 days in the builder  
+- Time window: filter `orders.created_at` to last 30 days in the builder
 
 ### KPI: Simple MRR (active subscriptions)
 
@@ -173,6 +177,7 @@ WHERE s.status = 'active';
 And, here's that SQL **translated** into reusable **data models**:
 
 `subscriptions.cube.yml`
+
 ```yaml
 cubes:
   - name: subscriptions
@@ -180,7 +185,7 @@ cubes:
 
     joins:
       - name: customers
-        sql: "{CUBE}.customer_id = {customers}.id"
+        sql: '{CUBE}.customer_id = {customers}.id'
         relationship: many_to_one
 
     dimensions:
@@ -209,7 +214,7 @@ cubes:
       - name: simple_mrr
         sql: CASE WHEN status = 'active' THEN monthly_price ELSE 0 END
         type: sum
-        title: "Simple MRR"
+        title: 'Simple MRR'
 ```
 
 Essentially, with the model, “Simple MRR” becomes a reusable measure you can break down by country, plan interval, and cohorts without re-authoring SQL.
@@ -218,16 +223,14 @@ Essentially, with the model, “Simple MRR” becomes a reusable measure you can
 
 ### Summary
 
-- In SQL queries, you hard-code the joins, filters, and aggregation for that one question. 
-    - Output is **a single result set** (great for ad-hoc or one chart).
+- In SQL queries, you hard-code the joins, filters, and aggregation for that one question.
+  - Output is **a single result set** (great for ad-hoc or one chart).
 - In models, you define reusable semantics: dimensions (fields), measures (aggregations), and joins.
-    - Output is **a flexible dataset** you can slice by time, country, product, etc, without new SQL.
+  - Output is **a flexible dataset** you can slice by time, country, product, etc, without new SQL.
 
 Modeling wins because it gives you:
 
-- **Reusability**: Centralize logic into measures and reuse across dashboards.  
-- **Consistency**: Everyone answers KPIs from the same definitions.  
-- **Composability**: Build derived cubes for complex KPIs; keep base cubes broad.  
-- **Governance & speed**: Easier reviews, CI/CD, and safer iteration.  
-
-
+- **Reusability**: Centralize logic into measures and reuse across dashboards.
+- **Consistency**: Everyone answers KPIs from the same definitions.
+- **Composability**: Build derived cubes for complex KPIs; keep base cubes broad.
+- **Governance & speed**: Easier reviews, CI/CD, and safer iteration.

@@ -2,7 +2,7 @@
 
 The **Embeddables API** lets you programmatically list all **Embeddables** in your workspace. This is useful for dynamically displaying available dashboards or automating certain management tasks.
 
-<Bruno/>
+<Bruno />
 
 ```ts
 // Important: Always call this server-side, never from client-side code
@@ -10,9 +10,9 @@ fetch('https://api.<region>.embeddable.com/api/v1/embeddables', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${apiKey}` // Keep your API key secure
-  }
+    Accept: 'application/json',
+    Authorization: `Bearer ${apiKey}`, // Keep your API key secure
+  },
 })
   .then((res) => res.json())
   .then(console.log);
@@ -33,7 +33,7 @@ Learn more about `region` [here](/deployment/deployment-regions).
         "latest": "2024-02-11T18:53:03.527633Z",
         "production": undefined, // hasn't yet been published to production
         "staging": "2024-02-11T18:53:03.527633Z",
-        "development": "2024-02-10T12:55:03.563273Z",
+        "development": "2024-02-10T12:55:03.563273Z"
       }
     },
     {
@@ -46,7 +46,7 @@ Learn more about `region` [here](/deployment/deployment-regions).
 }
 ```
 
-- **`id`**: A unique identifier for the Embeddable (a dashboard).  
-- **`name`**: The display name your team set in the no-code builder.  
+- **`id`**: A unique identifier for the Embeddable (a dashboard).
+- **`name`**: The display name your team set in the no-code builder.
 - **`tags`**: Optional labels for categorization or searching (support for `tags` is coming shortly).
 - **`lastPublishedAt`**: Shows timestamps for each environment (e.g. `production`) indicating when the dashboard was last published. If empty, it hasn't been published in that environment yet.

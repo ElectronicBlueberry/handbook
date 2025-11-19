@@ -2,7 +2,7 @@
 
 **Custom Canvas** lets your users go beyond static dashboards and **create their own dashboards** directly **inside your product**. You define the datasets, chart templates, and rules. They **create, customize** and **explore** the data to assemble a **self-serve custom canvas** that **fits their workflow**, without ever leaving your application.
 
-<ImageGrid images={["/img/custom-canvas/custom-canvas-example.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/custom-canvas-example.png']} width="100%" />
 
 ## What can you build?
 
@@ -13,6 +13,7 @@ Common **use cases** of **Custom Canvas** include:
 3. **Team dashboards**, shared across multiple users, where some have edit permissions and others are just viewers.
 
 This page will talk you through:
+
 - What **Custom Canvas** looks like for your **end-users**.
 - How to choose which **datasets**, **dimensions** and **measures** should be available to your end-users.
 - How to choose (and customize) the **charts, tables** and **components** that your end-users can use to **build their dashboards**.
@@ -23,15 +24,16 @@ If you're looking, instead, for **how to deploy Custom Canvas**, or how to achie
 
 With **Custom Canvas**, your users don’t just consume dashboards—they create dashboards that fit them.
 
- - **Personalized insights, faster** → Users build dashboards around the questions they care about, without waiting on engineering or analyst teams.
+- **Personalized insights, faster** → Users build dashboards around the questions they care about, without waiting on engineering or analyst teams.
 
- - **Freedom within guardrails** → You define the datasets, metrics, and chart types, while they explore and customize with confidence.
+- **Freedom within guardrails** → You define the datasets, metrics, and chart types, while they explore and customize with confidence.
 
- - **Seamless, scalable experience** → Dashboards live inside your app, feel native, and grow with users’ needs—from a quick chart to a full reporting hub.
+- **Seamless, scalable experience** → Dashboards live inside your app, feel native, and grow with users’ needs—from a quick chart to a full reporting hub.
 
 By empowering your **end-users** to help themselves to exactly what they need, you’re saving your own teams the time and effort of continuously building custom reports.
 
 Embeddable also handles the rest:
+
 - **Row-level security** so that each end-user only sees the data they’re allowed to see ([learn more](/data-modeling/row-level-security)).
 - **Theming**, **internationalisation** and **timezone support** can be applied so it feels like a native part of your platform experience.
 - The **dashboard state** for every custom dashboard is automatically stored and restored for your end-users when they make changes and later return, meaning “it just works” as soon as it's deployed ([learn more](/deployment/custom-canvas)).
@@ -44,31 +46,31 @@ Embeddable also handles the rest:
 
 Your users begin with a **clean, empty workspace** that feels flexible and approachable. From here, they can create dashboards that reflect their unique priorities.
 
-<ImageGrid images={["/img/custom-canvas/start-building.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/start-building.png']} width="100%" />
 
 ### **Use pre-built templates**
 
 You can provide a **library of pre-configured dashboard templates** tailored to common use cases. Users simply select one and begin customizing immediately.
 
-<ImageGrid images={["/img/custom-canvas/select-a-template.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/select-a-template.png']} width="100%" />
 
 ### Build charts with guided inputs
 
 Each chart is powered by the data fields you choose to make available. Users **select measures or dimensions**, and a **live preview** updates once the required inputs are complete. This strikes a balance between **flexibility for them** and **control for you**.
 
-<ImageGrid images={["/img/custom-canvas/build-your-chart.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/build-your-chart.png']} width="100%" />
 
 ### Create multi-chart dashboards
 
 Users can add, arrange, and resize as many charts as they need that tell the story of their data.
 
-<ImageGrid images={["/img/custom-canvas/multi-charts.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/multi-charts.png']} width="100%" />
 
 ### Combine Custom Canvas and fixed content
 
 Sometimes you want to set context. Custom Canvas supports **hybrid dashboards**, where you can fix key charts, metrics, or explanatory text at the top—while still allowing users to build their own canvas beneath.
 
-<ImageGrid images={["/img/custom-canvas/custom-canvas-example.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/custom-canvas-example.png']} width="100%" />
 
 </Steps>
 
@@ -82,7 +84,7 @@ Sometimes you want to set context. Custom Canvas supports **hybrid dashboards**,
 
 Turn on **Custom Canvas** by using the toggle beneath your main canvas. This opens up configuration options specific to user-created dashboards.
 
-<ImageGrid images={["/img/custom-canvas/custom-canvas-button.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/custom-canvas-button.png']} width="100%" />
 
 ### Select Available Datasets
 
@@ -91,7 +93,7 @@ In the **Datasets section**, select which datasets your users should be able to 
 - Datasets available to your users are highlighted in bright purple.
 - This makes it easy to distinguish between data powering your **main dashboards** and the data you want to expose for **user exploration**.
 
-<ImageGrid images={["/img/custom-canvas/custom-canvas-datasets.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/custom-canvas-datasets.png']} width="100%" />
 
 Your data team can apply fine-grained control over what [dimensions and measures](/data-modeling/dimensions-and-measures) are available to end-users using [Views](/data-modeling/views) and [Access Policies](/data-modeling/access-policies).
 
@@ -99,11 +101,11 @@ Your data team can apply fine-grained control over what [dimensions and measures
 
 Next, go to the **Template Library tab** to create reusable templates. These come from [your existing component library](/dashboards/starter-components) (e.g., pie chart, donut chart, bar chart).
 
-<ImageGrid images={["/img/custom-canvas/custom-canvas-templates.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/custom-canvas-templates.png']} width="100%" />
 
 Start by selecting a chart from your component library
 
-<ImageGrid images={["/img/custom-canvas/custom-canvas-add-template.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/custom-canvas-add-template.png']} width="100%" />
 
 ### Configure Chart Inputs
 
@@ -115,12 +117,15 @@ Define the fields your users will interact with when creating their charts:
 
 This balance lets you control how much flexibility users have.
 
-<ImageGrid images={["/img/custom-canvas/configure-a-template.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/configure-a-template.png']} width="100%" />
 
 Your templates can be [connected to variables](/dashboards/interactivity) that are manipulated by various controls (dropdowns, datepickers, etc) just like in regular dashboards. Simply attach inputs to variables as you would normally, and they'll carry through in your templates.
 
 <Callout emoji="💡">
-Best practice: keep your controls in the standard section of your dashboard, rather than in the Custom Canvas area. We don't recommend adding controls as templates to the Custom Canvas template library, as they will not necessarily work correctly (and may lead to a confusing user experience).
+  Best practice: keep your controls in the standard section of your dashboard, rather than in the
+  Custom Canvas area. We don't recommend adding controls as templates to the Custom Canvas template
+  library, as they will not necessarily work correctly (and may lead to a confusing user
+  experience).
 </Callout>
 
 ### Name and Describe Templates
@@ -133,21 +138,22 @@ Give each template:
 
 This helps users easily differentiate between chart types when building dashboards.
 
-<ImageGrid images={["/img/custom-canvas/name-your-template.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/name-your-template.png']} width="100%" />
 
 ### Manage and Organize Templates
 
-All configured templates appear on your **dashboard builder page**, below your main dashboard.  
- - Add as many templates as you like.  
- - Manage templates easily using the on-hover controls.
+All configured templates appear on your **dashboard builder page**, below your main dashboard.
 
-<ImageGrid images={["/img/custom-canvas/manage-and-organise.png"]} width="100%" />
+- Add as many templates as you like.
+- Manage templates easily using the on-hover controls.
+
+<ImageGrid images={['/img/custom-canvas/manage-and-organise.png']} width="100%" />
 
 ### Preview and Publish
 
 When you’re ready, **Preview** the user experience to ensure everything looks and feels right. Then simply hit **Publish** to make Custom Canvas live for your users.
 
-<ImageGrid images={["/img/custom-canvas/preview.png"]} width="100%" />
+<ImageGrid images={['/img/custom-canvas/preview.png']} width="100%" />
 
 </Steps>
 

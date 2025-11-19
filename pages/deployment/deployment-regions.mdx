@@ -4,12 +4,12 @@ We currently support `US` and `EU` deployment regions (more coming soon).
 
 Depending on your region, your workspace will be hosted at one of these sites:
 
- - [https://app.us.embeddable.com](https://app.us.embeddable.com) for US.
- - [https://app.eu.embeddable.com](https://app.eu.embeddable.com) for EU.
+- [https://app.us.embeddable.com](https://app.us.embeddable.com) for US.
+- [https://app.eu.embeddable.com](https://app.eu.embeddable.com) for EU.
 
 When you go to https://embeddable.com and click "Log in", make sure to pick the appropriate region:
 
-<ImageGrid width='50%' images={["/img/embeddable-regions.png"]}/>
+<ImageGrid width="50%" images={['/img/embeddable-regions.png']} />
 
 ### Update Your Configuration
 
@@ -40,19 +40,13 @@ export default defineConfig({
 When [embedding](/deployment/embedding), you’ll also need to use the correct `<script>` tag:
 
 ```js
-<script 
-  type="module" 
-  src="https://embed.embeddable.com/js/v1/?region=<region>">
-</script>
+<script type="module" src="https://embed.embeddable.com/js/v1/?region=<region>"></script>
 ```
 
-where `<region>` is one of `US` or `EU`.  E.g. for `US`:
+where `<region>` is one of `US` or `EU`. E.g. for `US`:
 
 ```js
-<script 
-  type="module" 
-  src="https://embed.embeddable.com/js/v1/?region=US">
-</script>
+<script type="module" src="https://embed.embeddable.com/js/v1/?region=US"></script>
 ```
 
 Learn more about embedding [here](/deployment/embedding).
@@ -61,24 +55,26 @@ Learn more about embedding [here](/deployment/embedding).
 
 For direct database connections:
 
- - For US use `98.82.255.116`
- - For EU use `3.125.110.225`
+- For US use `98.82.255.116`
+- For EU use `3.125.110.225`
 
 For connections via SSH:
 
- - For US use `35.171.35.74`
- - For EU use `3.77.50.38`
+- For US use `35.171.35.74`
+- For EU use `3.77.50.38`
 
 ### Static Domains to Whitelist
 
 This is only needed if your end-users need to whitelist which domains they can load static assets from.
 
 Web-component
+
 ```js
 static-data.<region>.embeddable.com
 ```
 
 Bundled components
+
 ```js
 bundles.<region>.embeddable.com
 ```

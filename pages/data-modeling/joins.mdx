@@ -4,13 +4,14 @@ When your database tables relate to each other, you can represent those relation
 
 Imagine the following database:
 
-| **Table**    | **Key Relationships**                      |
-|--------------|--------------------------------------------|
-| **customers** | A **customer** can have many **orders**. |
+| **Table**     | **Key Relationships**                                             |
+| ------------- | ----------------------------------------------------------------- |
+| **customers** | A **customer** can have many **orders**.                          |
 | **orders**    | Each **order** is linked to one **customer** and one **product**. |
-| **products**  | Each **product** can appear in many **orders**. |
+| **products**  | Each **product** can appear in many **orders**.                   |
 
 With these relationships, you can answer questions like:
+
 - "How many **orders** did a specific **customer** place last month?"
 - "What’s the most popular **product** in a specific **country** this week?"
 - "Which **customer** has spent the most money?"
@@ -19,21 +20,22 @@ There are two ways to approach combining these tables:
 
 ### 1. One Model for Multiple Tables
 
-You can use the `sql` parameter to combine tables. This approach is often very useful if multiple raw database tables need to be joined together to represent one ***clean*** **user-facing concept**.
+You can use the `sql` parameter to combine tables. This approach is often very useful if multiple raw database tables need to be joined together to represent one **_clean_** **user-facing concept**.
 
 ```yaml
 cubes:
   - name: customers_and_orders_and_products
-    sql: > 
+    sql: >
       SELECT *
       FROM public.customers
       JOIN public.orders ON customers.id = orders.customer_id
       JOIN public.products ON products.id = orders.product_id
     ...
-``` 
+```
+
 ### 2. Multiple Models with Joins
 
-The general rule of thumb is to try and have **one data model** for **each user-facing concept**. 
+The general rule of thumb is to try and have **one data model** for **each user-facing concept**.
 
 E.g. **Spotify** would probably want a data model to represent each of the following concepts: `playlists`, `listeners`, `artists`, `tracks`, etc.
 
@@ -99,11 +101,11 @@ cubes:
 - **`name`**: In a `joins` block, `name` refers to another **model** (cube), not the underlying database table.
 
 - **`sql`**: Specifies the SQL condition that defines how two models are related. You can reference either columns or dimensions:
-  - `{products}.some_column` points to the **some_column** field in the **database table** associated with the **products** model.  
-  - `{products.some_dimension}` refers to the **some_dimension** **dimension** that’s defined inside the **products** model.  
+  - `{products}.some_column` points to the **some_column** field in the **database table** associated with the **products** model.
+  - `{products.some_dimension}` refers to the **some_dimension** **dimension** that’s defined inside the **products** model.
   - `my_products.some_column` accesses the **some_column** in the actual **my_products** table in your database (i.e. the raw table name).
 
-- **`relationship`**:  Set `relationship` to [one_to_one](https://cube.dev/docs/reference/data-model/joins#one-to-one), [one_to_many](https://cube.dev/docs/reference/data-model/joins#one-to-many), or [many_to_one](https://cube.dev/docs/reference/data-model/joins#many-to-one) depending on your schema.
+- **`relationship`**: Set `relationship` to [one_to_one](https://cube.dev/docs/reference/data-model/joins#one-to-one), [one_to_many](https://cube.dev/docs/reference/data-model/joins#one-to-many), or [many_to_one](https://cube.dev/docs/reference/data-model/joins#many-to-one) depending on your schema.
 
 - **`primary_key`**: Each model should have a dimension marked `primary_key: true`. This ensures Cube can generate valid JOIN queries. By default, primary keys are hidden in the UI - use `public: true` if you want to expose them as dimensions. If no single column uniquely identifies rows, build a composite key with a custom SQL expression:
   ```yaml
@@ -116,4 +118,4 @@ cubes:
 
 ## Joining data from multiple data sources
 
-You can also join data stored in different databases using something called a [rollup_join](https://cube.dev/docs/product/caching/using-pre-aggregations#joins-between-pre-aggregations).  You'll need to understand [pre-aggregations](./caching/pre-aggregations) first. 
+You can also join data stored in different databases using something called a [rollup_join](https://cube.dev/docs/product/caching/using-pre-aggregations#joins-between-pre-aggregations). You'll need to understand [pre-aggregations](./caching/pre-aggregations) first.

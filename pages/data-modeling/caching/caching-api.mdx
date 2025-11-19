@@ -40,13 +40,14 @@ fetch('https://api.<region>.embeddable.com/api/v1/caching/refresh-contexts', {
 
 Response:
 Status 204 (No Content)
+
 ```
 
 <Callout emoji="💡">
   The `savedVersion` value for a given dashboard tells Embeddable which models and cube version it should use when refreshing pre-aggregations (e.g. it will use those tagged as “production”)
 </Callout>
 
-   - `region`: your deployment region ([learn more](/deployment/deployment-regions)). 
+   - `region`: your deployment region ([learn more](/deployment/deployment-regions)).
    - `apiKey`: your [API key](/getting-started/set-up-your-workspace#retrieve-your-api-key)
     - `embeddables`: (required) a list of Embeddables to refresh. Each object must contain:
       - `id`: the unique identifier of the Embeddable dashboard.
@@ -62,3 +63,4 @@ If you load a dashboard using a security token containing a security context tha
 </Callout>
 
 Each time you call this it will **override** the previous settings. For example, if you want to stop a security context from refreshing, just call the API again with all security contexts except the one you want to stop.
+```

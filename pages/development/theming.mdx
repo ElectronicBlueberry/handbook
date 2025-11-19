@@ -2,14 +2,11 @@
 
 Embeddable theming is a straightforward approach to styling your dashboard that allows you to control a large number of values in a single TypeScript object.
 
-<VideoComponent
-    src="/video/theme-example.mp4"
-    width="800"
-    height="450"
-/>
+<VideoComponent src="/video/theme-example.mp4" width="800" height="450" />
 
 <Callout emoji="⚠️">
-  Were you working with the previous version of Vanilla components that required you to clone that entire repo? [Go here for full instructions on switching!](/development/theme-welcome.mdx)
+  Were you working with the previous version of Vanilla components that required you to clone that
+  entire repo? [Go here for full instructions on switching!](/development/theme-welcome.mdx)
 </Callout>
 
 ### The Basics
@@ -37,7 +34,7 @@ If you just want to have a single theme, it’s a very straightforward process! 
 import { Theme, defineTheme } from '@embeddable.com/vanilla-components';
 
 const themeProvider = (clientContext: any, parentTheme: Theme): Theme =>
-	defineTheme(parentTheme, {
+  defineTheme(parentTheme, {
     brand: {
       primary: '#008348',
       secondary: '#BA9653',
@@ -60,13 +57,13 @@ const themeProvider = (clientContext: any, parentTheme: Theme): Theme =>
   });
 
 export default themeProvider;
-
 ```
 
 Let’s break down what’s happening here. First, we’re bringing in the `Theme` type from Vanilla Components to help with type consistency, and the `defineTheme` function from the same repo, which we use to help us merge our changes into the default Vanilla Components theme. Our `themeProvider` function has `clientContext` (which we’re not using in this example, but see below!) and `parentTheme` parameters. Without that `parentTheme`, we wouldn’t get all of the values from Vanilla Components. You could still go without it, but you’d have to define every single property specified in [`Theme`](https://github.com/embeddable-hq/vanilla-components-v1/blob/main/src/themes/theme.ts) which, as of this writing, is about 130 lines of code. Should you want that level of granular control, just skip using `defineTheme` at all, and return your theme object directly.
 
 <Callout emoji="💡">
-You can find the full list of available `Theme` properties (and their default values) [here](https://github.com/embeddable-hq/vanilla-components-v1/blob/main/src/themes/defaulttheme.ts).
+  You can find the full list of available `Theme` properties (and their default values)
+  [here](https://github.com/embeddable-hq/vanilla-components-v1/blob/main/src/themes/defaulttheme.ts).
 </Callout>
 
 Once you’ve changed `embeddable.theme.ts`, save it, and you should be set. Your theme changes will show up across all of the Vanilla Components. [Try it out](/development/defining-components#push-to-embeddable) using `npm run embeddable:dev`!
@@ -146,7 +143,7 @@ const themeProvider = (clientContext: ClientContext, parentTheme: Theme): Theme 
   if (theme === 'dark') {
     currentTheme = darkTheme;
   }
-	return defineTheme(parentTheme, currentTheme);
+  return defineTheme(parentTheme, currentTheme);
 };
 
 export default themeProvider;
@@ -162,17 +159,20 @@ If you’re going to support more than a handful of themes, for example, if you 
 
 ```tsx
 // your front-end code
-<em-beddable token={{securityToken}} clientContext={{
-  theme: {
-    brand: {
-      primary: '#0066FF',
-      secondary: '#FF6600',
+<em-beddable
+  token={{ securityToken }}
+  clientContext={{
+    theme: {
+      brand: {
+        primary: '#0066FF',
+        secondary: '#FF6600',
+      },
+      font: {
+        family: 'Consolas',
+      },
     },
-    font: {
-      family: 'Consolas',
-    },
-  }
-}} />
+  }}
+/>
 ```
 
 ```tsx
@@ -181,13 +181,13 @@ import { Theme, defineTheme } from '@embeddable.com/vanilla-components';
 
 const themeProvider = (clientContext: any, parentTheme: Theme): Theme => {
   const { theme } = clientContext;
-	return defineTheme(parentTheme, theme);
+  return defineTheme(parentTheme, theme);
 };
 
 export default themeProvider;
 ```
 
-This approach would support as many themes as you’d like, and the theme objects you send can be a few overrides or all of the data needed to completely change every aspect of the theme! 
+This approach would support as many themes as you’d like, and the theme objects you send can be a few overrides or all of the data needed to completely change every aspect of the theme!
 
 ### A Note About Custom Fonts
 
@@ -227,17 +227,18 @@ font: {
 Under the hood, our theme provider attempts to find any custom fonts you define in `theme.font.family` via Google Fonts. If they support it, we load it into the Embeddable and apply it to your theme.
 
 <Callout emoji="🚧">
-  Currently, your font choice impacts the entire dashboard. In the future, we will support the ability to set different fonts for different parts of the dashboard, such as titles, descriptions, etc.
+  Currently, your font choice impacts the entire dashboard. In the future, we will support the
+  ability to set different fonts for different parts of the dashboard, such as titles, descriptions,
+  etc.
 </Callout>
-
 
 ### Using Themes In Your Own Components
 
-There are two ways to access themes in your components. The first is through CSS variables, and the second is through the Theme Provider, which is a simple hook that allows you access to all the values.  Let’s cover both.
+There are two ways to access themes in your components. The first is through CSS variables, and the second is through the Theme Provider, which is a simple hook that allows you access to all the values. Let’s cover both.
 
 **CSS Variables**
 
-The good news is: you don’t have to create or update all of these yourself. In fact, you don’t have to update *any* of them yourself. They’re auto-generated. All of these variables are prefaced with `embeddable` to help avoid conflicts, and they are structured exactly like the theme object. Here is a very small example of them:
+The good news is: you don’t have to create or update all of these yourself. In fact, you don’t have to update _any_ of them yourself. They’re auto-generated. All of these variables are prefaced with `embeddable` to help avoid conflicts, and they are structured exactly like the theme object. Here is a very small example of them:
 
 ```css
 --embeddable-brand-primary: '#0066FF';
@@ -263,8 +264,8 @@ export default (props: Props) => {
   const theme: Theme = useTheme() as Theme;
   const updatedProps = {
     ...props,
-    theme
-  }
+    theme,
+  };
 
   // Set ChartJS defaults
   setChartJSDefaults(theme, 'pie');
@@ -274,18 +275,11 @@ export default (props: Props) => {
   if (theme.charts.pie.colors) {
     chartColors = theme.charts.pie.colors;
   }
-  
+
   const options = getChartOptions(updatedProps);
   const data = formatChartData(updatedProps, chartColors);
-  
-  return (
-    <Pie
-      height="100%"
-      options={options}
-      data={data}
-      onClick={() => null}
-    />
-  );
+
+  return <Pie height="100%" options={options} data={data} onClick={() => null} />;
 };
 ```
 
@@ -315,4 +309,4 @@ export const setChartJSDefaults = (theme: Theme, chartType?: ChartType) => {
 
 As you can see, accessing theme values in your own components is simple: use the hook to set a `theme` object, then reference the properties on that object as you’d expect.
 
-Please note: `useTheme` runs before render, unlike most React hooks, so you will *always* have access to a theme if you have one defined (if you don’t use vanilla components at all, you’ll need to define one. We’ll have separate documentation on that soon).
+Please note: `useTheme` runs before render, unlike most React hooks, so you will _always_ have access to a theme if you have one defined (if you don’t use vanilla components at all, you’ll need to define one. We’ll have separate documentation on that soon).

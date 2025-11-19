@@ -4,7 +4,7 @@ If you already use [**dbt**](https://docs.getdbt.com/docs/build/projects) for yo
 
 Refer to the diagram below to see how dbt and Cube Cloud work together. From data modelling in dbt to semantic enrichment in Cube.
 
-<ImageGrid images={["/img/dbt-cube-diagram-min.png"]}/>
+<ImageGrid images={['/img/dbt-cube-diagram-min.png']} />
 
 Source: [Cube's Official Docs](https://cube.dev/docs/product/data-modeling/recipes/dbt)
 
@@ -39,16 +39,14 @@ FROM {{ source('public', 'customers') }}
 Run `dbt build` in **dbt** to build your model, then use `dbt run` to materialize it in your database (as a view in this example).
 
 <Callout emoji="💡">
-Cube works with all dbt materializations except [ephemeral](http://docs.getdbt.com/docs/build/materializations#ephemeral) models. You can learn more about dbt materializations [here](https://docs.getdbt.com/docs/build/materializations).
-</Callout> 
+  Cube works with all dbt materializations except
+  [ephemeral](http://docs.getdbt.com/docs/build/materializations#ephemeral) models. You can learn
+  more about dbt materializations [here](https://docs.getdbt.com/docs/build/materializations).
+</Callout>
 
 Once the command completes, dbt generates a `manifest.json` file under **target** folder that describes your models, sources, and lineage. Cube uses this file to understand your dbt project structure.
 
-<VideoComponent
-    src="/video/manifest-json-ezgif.com-resize-video.mp4"
-    width="1920"
-    height="1080"
-/>
+<VideoComponent src="/video/manifest-json-ezgif.com-resize-video.mp4" width="1920" height="1080" />
 
 ## 2. Connect Cube Cloud to your dbt project
 
@@ -66,13 +64,13 @@ cube_dbt
 
 Once you add this to your `requirements.txt`, **Cube Cloud** automatically installs the package when it builds your branch.
 
-<ImageGrid images={["/img/cube-dbt-package-min.png"]}/>
+<ImageGrid images={['/img/cube-dbt-package-min.png']} />
 
 ### Add the `manifest.json` file to the root of your project
 
-Commit your dbt `manifest.json` file to the **root folder** of your Cube project.  This enables Cube to read your dbt manifest and render dbt models directly inside your Cube model files.
+Commit your dbt `manifest.json` file to the **root folder** of your Cube project. This enables Cube to read your dbt manifest and render dbt models directly inside your Cube model files.
 
-<ImageGrid images={["/img/manifest-json-cube-folder-min.png"]}/>
+<ImageGrid images={['/img/manifest-json-cube-folder-min.png']} />
 
 ### Render your dbt models in Cube
 
@@ -81,8 +79,12 @@ Commit your dbt `manifest.json` file to the **root folder** of your Cube project
 To do this, dbt models must be made accessible from Jinja templates so they can be referenced in your Cube models. We’ll use the [`globals.py`](https://cube.dev/docs/product/configuration/recipes/environment-variables#globalspy-file) file for this.
 
 <Callout emoji="💡">
-The [`globals.py`](https://cube.dev/docs/product/configuration/recipes/environment-variables#globalspy-file) file in **Cube Cloud** is a special configuration file that lets you define **Python variables, functions, and imports** that can be used across your entire Cube project. It’s particularly useful for creating **reusable logic** that can be accessed from any part of your data model.
-</Callout> 
+  The
+  [`globals.py`](https://cube.dev/docs/product/configuration/recipes/environment-variables#globalspy-file)
+  file in **Cube Cloud** is a special configuration file that lets you define **Python variables,
+  functions, and imports** that can be used across your entire Cube project. It’s particularly
+  useful for creating **reusable logic** that can be accessed from any part of your data model.
+</Callout>
 
 Here, we use it to expose dbt models through two helper functions: [`dbt_models`](https://cube.dev/docs/product/data-modeling/reference/cube_dbt#dbtmodels) and [`dbt_model`](https://cube.dev/docs/product/data-modeling/reference/cube_dbt#dbtmodel) in your `globals.py` file:
 
@@ -108,14 +110,11 @@ def dbt_model(name):
 ### Things to notice
 
 - **`dbt = Dbt.from_file('./manifest.json')`**
-    
-    This is the simplest way to read your `manifest.json` file from the local project directory.You can also load manifest file from **remote storage** (both public and private).
-    Learn more ways to load your manifest file [here](https://cube.dev/docs/product/data-modeling/recipes/dbt#loading-dbt-projects).
-    
+  This is the simplest way to read your `manifest.json` file from the local project directory.You can also load manifest file from **remote storage** (both public and private).
+  Learn more ways to load your manifest file [here](https://cube.dev/docs/product/data-modeling/recipes/dbt#loading-dbt-projects).
 - **Template functions**
-    
-    The `dbt_models()` and `dbt_model(name)` functions expose your dbt models to Jinja templates, allowing you to render them dynamically inside Cube model files. 
-    Learn more about ways to render dbt models in Cube [here](https://cube.dev/docs/product/data-modeling/recipes/dbt#rendering-dbt-models).
+  The `dbt_models()` and `dbt_model(name)` functions expose your dbt models to Jinja templates, allowing you to render them dynamically inside Cube model files.
+  Learn more about ways to render dbt models in Cube [here](https://cube.dev/docs/product/data-modeling/recipes/dbt#rendering-dbt-models).
 
 ## 3. Create a Cube model from a dbt model
 
@@ -126,10 +125,10 @@ Now, let’s define a Cube model that builds on top of our `customers` dbt model
 {% set model = dbt_model('customers') %}
 cubes:
   - {{ model.as_cube() }}
- 
+
     dimensions:
       {{ model.as_dimensions() }}
-      
+
     measures:
       - name: count
         type: count
@@ -149,7 +148,7 @@ You can now query your `customers` data within your Cube environment, just like 
 
 It’s best practice to render each dbt model (or data mart) as a **cube in its own file**. This keeps your Jinja templates simple and makes your data model easier to maintain as it grows.
 
-For example, if your dbt project defines three models  `customers`, `products`, and `orders` you’d create three separate Cube models:
+For example, if your dbt project defines three models `customers`, `products`, and `orders` you’d create three separate Cube models:
 
 ```
 model/cubes/
@@ -169,9 +168,9 @@ Once your models are available in Cube, use our [**Data Provider API**](/data/cu
 All your models from Cube will automatically appear in Embeddable.
 
 <VideoComponent
-    src="/video/cube-dbt-project-in-embeddable-ezgif.com-resize-video.mp4"
-    width="1920"
-    height="1080"
+  src="/video/cube-dbt-project-in-embeddable-ezgif.com-resize-video.mp4"
+  width="1920"
+  height="1080"
 />
 
 ## 5. Scaling up: working with larger dbt projects

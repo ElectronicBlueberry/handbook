@@ -1,41 +1,40 @@
 # Using the Data Playground
 
-You can test your models in Embeddable’s **Data Playground**.  Simply click the in-platform **Data Playground** tab on the left of the main platform screen:
+You can test your models in Embeddable’s **Data Playground**. Simply click the in-platform **Data Playground** tab on the left of the main platform screen:
 
-<VideoComponent
-    src="/video/data-playground.mp4"
-    width="1250"
-    height="854"
-/>
+<VideoComponent src="/video/data-playground.mp4" width="1250" height="854" />
 
- - **View as**: this allows you to test the row-level security by viewing the data as if you are different end-users ([learn more](/data-modeling/row-level-security#testing-security-contexts-in-embeddable)).
- - **Data model**: choose which data model you want to test ([defining data models](/data-modeling/defining-models)) 
- - **Columns**: choose which dimensions and measures you want to see (note that all dimensions and measures that are "reachable" from the chosen *data model* will be available here. i.e. any dimensions and measures from any model that can be reached via a join) ([dimensions and measures](/data-modeling/dimensions-and-measures))
- - **Models version**: this allows you to load previous versions of models ([pushing your models](/data-modeling/pushing-models))
- - **Generated SQL**: once you click the "Run" button, the SQL that will be used to retrieve your chosen columns will be shown here.  This is very useful for debugging your models to understand if the SQL has been defined correctly for your database data.
- - **Results**: once you click the "Run" button, the SQL will be run against your database, and the results will be shown here (or an error message if your database has a problem running the generated SQL).
+- **View as**: this allows you to test the row-level security by viewing the data as if you are different end-users ([learn more](/data-modeling/row-level-security#testing-security-contexts-in-embeddable)).
+- **Data model**: choose which data model you want to test ([defining data models](/data-modeling/defining-models))
+- **Columns**: choose which dimensions and measures you want to see (note that all dimensions and measures that are "reachable" from the chosen _data model_ will be available here. i.e. any dimensions and measures from any model that can be reached via a join) ([dimensions and measures](/data-modeling/dimensions-and-measures))
+- **Models version**: this allows you to load previous versions of models ([pushing your models](/data-modeling/pushing-models))
+- **Generated SQL**: once you click the "Run" button, the SQL that will be used to retrieve your chosen columns will be shown here. This is very useful for debugging your models to understand if the SQL has been defined correctly for your database data.
+- **Results**: once you click the "Run" button, the SQL will be run against your database, and the results will be shown here (or an error message if your database has a problem running the generated SQL).
 
 ## Testing your local data models
 
-The data playground (see above) can also be used to test [code models](/data-modeling/getting-setup#defining-models-in-code) locally on your computer.  Access it by running:
+The data playground (see above) can also be used to test [code models](/data-modeling/getting-setup#defining-models-in-code) locally on your computer. Access it by running:
 
 ```bash
 npm run embeddable:dev
 ```
-from your code repository.  This will spin up a "dev" workspace that uses your local models.
+
+from your code repository. This will spin up a "dev" workspace that uses your local models.
 
 - The local workspace uses the same data connections as your online workspace.
-- Simply click the Data Playground tab in the left sidebar. 
-- You’ll then be able to test each element of your models, view the generated SQL, and inspect the results.  
+- Simply click the Data Playground tab in the left sidebar.
+- You’ll then be able to test each element of your models, view the generated SQL, and inspect the results.
 
-You can also build dashboards in the "dev" workspace to test your local models on a dashboard. 
+You can also build dashboards in the "dev" workspace to test your local models on a dashboard.
 
 <Callout emoji="💡">
-If your models are in a [separate repo](/data-modeling/getting-setup#2-storing-models-separately) to your components then, when running `embeddable:dev`, you'll have access to the components available in your online workspace. 
+  If your models are in a [separate repo](/data-modeling/getting-setup#2-storing-models-separately)
+  to your components then, when running `embeddable:dev`, you'll have access to the components
+  available in your online workspace.
 </Callout>
 
 <CardGrid>
-  <LinkCard title="Defining your first data models" href="/data-modeling/defining-models" icon=""/> 
+  <LinkCard title="Defining your first data models" href="/data-modeling/defining-models" icon="" />
 </CardGrid>
 
 ## Testing using Cube's Data Playground
@@ -43,17 +42,19 @@ If your models are in a [separate repo](/data-modeling/getting-setup#2-storing-m
 You can also use Cube's local Data Playground to test and debug your models.
 
 <Callout emoji="">
-  This relies on you having [Docker](https://www.docker.com/products/docker-desktop/) installed on your local machine.
+  This relies on you having [Docker](https://www.docker.com/products/docker-desktop/) installed on
+  your local machine.
 </Callout>
 
 <Steps>
 
-### Create a `.env` file:  
-   Ensure your `.env` file is in the same directory as `cube-playground.yml` ([this directory](https://github.com/embeddable-hq/vanilla-components/tree/main/src)).
+### Create a `.env` file:
 
-### Populate the `.env` file: 
+Ensure your `.env` file is in the same directory as `cube-playground.yml` ([this directory](https://github.com/embeddable-hq/vanilla-components/tree/main/src)).
 
-   Populate the `.env` file with the correct database credentials for your database as per the [Cube's documentation](https://cube.dev/docs/product/configuration/data-sources).
+### Populate the `.env` file:
+
+Populate the `.env` file with the correct database credentials for your database as per the [Cube's documentation](https://cube.dev/docs/product/configuration/data-sources).
 
     ```env
     CUBEJS_DB_TYPE=postgres
@@ -70,35 +71,38 @@ You can also use Cube's local Data Playground to test and debug your models.
 
     You can also add set the **desired level of logging detail**, which can be useful for debugging and monitoring:
     ```env
-    CUBEJS_DB_SSL=warn 
+    CUBEJS_DB_SSL=warn
     ```
-    **Possible values**:  
-    `warn` *(default value)*: Logs warnings in addition to errors.  
-    Example: Deprecation warnings or configuration issues. 
+    **Possible values**:
+    `warn` *(default value)*: Logs warnings in addition to errors.
+    Example: Deprecation warnings or configuration issues.
 
-    `error`: Logs only critical errors that affect the application's functionality.  
+    `error`: Logs only critical errors that affect the application's functionality.
     Example: Database connection issues or critical service failures.
 
-    `info`: Logs general informational messages about the application's operations.  
-    Example: Application startup, health checks, or key lifecycle events. 
+    `info`: Logs general informational messages about the application's operations.
+    Example: Application startup, health checks, or key lifecycle events.
 
-    `trace`: Logs the most detailed information, primarily used for in-depth debugging.  
+    `trace`: Logs the most detailed information, primarily used for in-depth debugging.
     Example: Internal function calls and exhaustive execution details.
 
+### Run the Playground
 
-### Run the Playground  
-   Execute the following command to start Cube's data playground:
-   ```bash
-   npm run cube:playground
-   ```
+Execute the following command to start Cube's data playground:
 
-   You can also use docker compose:
-   ```bash
-   docker compose -f ./src/cube-playground.yml up
-   ```
+```bash
+npm run cube:playground
+```
 
-### Access the Playground 
-   Open your browser and navigate to [localhost:4000](http://localhost:4000) to use Cube Playground.
+You can also use docker compose:
+
+```bash
+docker compose -f ./src/cube-playground.yml up
+```
+
+### Access the Playground
+
+Open your browser and navigate to [localhost:4000](http://localhost:4000) to use Cube Playground.
 
 </Steps>
 

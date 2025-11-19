@@ -1,7 +1,7 @@
 # Set up your Repo
 
 <Callout emoji="💡">
-    Embeddable requires [Node.js version 20](/development/introduction#requirements) or later.
+  Embeddable requires [Node.js version 20](/development/introduction#requirements) or later.
 </Callout>
 
 <Steps>
@@ -13,6 +13,7 @@ Download or clone our boilerplate repo [here](https://github.com/embeddable-hq/e
 ```bash
 git clone https://github.com/embeddable-hq/embeddable-boilerplate
 ```
+
 ### Install Dependencies
 
 Navigate into the cloned directory and install the required dependencies:
@@ -20,18 +21,22 @@ Navigate into the cloned directory and install the required dependencies:
 ```bash
 npm i
 ```
+
 ### Set Your Region
 
 In your `embeddable.config.ts` file, depending on [your region](/deployment/deployment-regions), uncomment either:
+
 ```js
 region: 'US',
 ```
+
 or
+
 ```js
 region: 'EU',
 ```
 
-If you’re unsure which `region` you’re using, please reach out to us. 
+If you’re unsure which `region` you’re using, please reach out to us.
 
 ### Build the Code Bundle
 
@@ -40,12 +45,13 @@ Run the following command to build your code bundle:
 ```bash
 npm run embeddable:build
 ```
+
 </Steps>
 
 ## Next steps
 
-You're now ready to set up your workspace and push your first code bundle. 
+You're now ready to set up your workspace and push your first code bundle.
 
 <CardGrid>
-  <LinkCard title="Set up your Workspace" href="/getting-started/set-up-your-workspace" icon=""/> 
+  <LinkCard title="Set up your Workspace" href="/getting-started/set-up-your-workspace" icon="" />
 </CardGrid>

@@ -4,16 +4,15 @@ In addition to the Level 1 [in-memory cache](/data-modeling/caching/in-memory),
 
 ## What are pre-aggregations?
 
-Pre-aggregations allow you to compute and store aggregations (like sums, averages, and counts, but also a set of dimensions) in advance rather than calculating them on the fly for each query. When a query can be fully answered from a pre-aggregation, results are retrieved directly from the pre-aggregated table instead of scanning raw data, significantly speeding up response times (and reducing cost and load on your databases).  This also means that multiple components + charts on your dashboard can retrieve data from just one or a few pre-aggregations (meaning fewer queries).
+Pre-aggregations allow you to compute and store aggregations (like sums, averages, and counts, but also a set of dimensions) in advance rather than calculating them on the fly for each query. When a query can be fully answered from a pre-aggregation, results are retrieved directly from the pre-aggregated table instead of scanning raw data, significantly speeding up response times (and reducing cost and load on your databases). This also means that multiple components + charts on your dashboard can retrieve data from just one or a few pre-aggregations (meaning fewer queries).
 
-> **Pre-aggregations**: You can think of a pre-aggregation as a simple **temporary table** (or **materialized view**) but managed and stored automatically by Embeddable, rather than in your database.  You control how often each pre-aggregation is refreshed using the **refresh_key**. Learn more about refreshing pre-aggregations [here](/data-modeling/caching/pre-aggregations#refreshing-pre-aggregations)  
-> 
+> **Pre-aggregations**: You can think of a pre-aggregation as a simple **temporary table** (or **materialized view**) but managed and stored automatically by Embeddable, rather than in your database. You control how often each pre-aggregation is refreshed using the **refresh_key**. Learn more about refreshing pre-aggregations [here](/data-modeling/caching/pre-aggregations#refreshing-pre-aggregations)
 
 ## Why use pre-aggregations?
 
-Without pre-aggregations, all data loading requests from your Embeddable components will hit your database(s) directly every time.  
+Without pre-aggregations, all data loading requests from your Embeddable components will hit your database(s) directly every time.
 
-This has the advantage that users will always see the latest (up-to-date) data directly from the database.  However, when a lot of concurrent users are viewing your dashboards at the same time, this can quickly mean a high load on your databases, which may affect their performance (both in terms of response time and financial cost):
+This has the advantage that users will always see the latest (up-to-date) data directly from the database. However, when a lot of concurrent users are viewing your dashboards at the same time, this can quickly mean a high load on your databases, which may affect their performance (both in terms of response time and financial cost):
 
 1. for OLTP (row-based) databases like Postgres, MySQL and SQLServer it can mean that some queries take too long to come back, as these databases are optimised for row-based lookup, not columnar aggregates.
 2. for OLAP (columnar) databases like Snowflake, BigQuery and Redshift it can mean significant financial costs in serving those incoming queries.
@@ -21,12 +20,14 @@ This has the advantage that users will always see the latest (up-to-date) data d
 
 Pre-aggregations allow you to pre-aggregate the results so that the incoming queries have less work to do to return a result (which in turn means fast results).
 
-As an example, users may want to see their data by month or week.  Going through all the data, every time, and grouping it by week and month is expensive and slow.  Instead, you can define a pre-aggregation that pre-aggregates the data by month and by week.  That way, the incoming queries can use this pre-aggregated data in order to skip the expensive steps and answer the query faster.
+As an example, users may want to see their data by month or week. Going through all the data, every time, and grouping it by week and month is expensive and slow. Instead, you can define a pre-aggregation that pre-aggregates the data by month and by week. That way, the incoming queries can use this pre-aggregated data in order to skip the expensive steps and answer the query faster.
 
 ## How do you define a pre-aggregation?
 
 <Callout emoji="💡">
-Pre-aggregations can currently only be defined in code, not in the in-platform **Data Model Editor**.  To add pre-aggregations, please export it from the Data Model Editor and add it to your code repository instead (learn how [here](/data-modeling/getting-setup#defining-models-in-code)).
+  Pre-aggregations can currently only be defined in code, not in the in-platform **Data Model
+  Editor**. To add pre-aggregations, please export it from the Data Model Editor and add it to your
+  code repository instead (learn how [here](/data-modeling/getting-setup#defining-models-in-code)).
 </Callout>
 
 To set up a pre-aggregation you need to do three simple steps:
@@ -35,15 +36,15 @@ To set up a pre-aggregation you need to do three simple steps:
 
 2. define a refresh schedule using the **refresh_key** within your pre-aggregation. Learn more about refreshing pre-aggregations [here](/data-modeling/caching/pre-aggregations#refreshing-pre-aggregations).
 
-3. setup embeddable’s [caching api](/data-modeling/caching/caching-api) to refresh pre-aggregations for each of your security contexts. 
+3. setup embeddable’s [caching api](/data-modeling/caching/caching-api) to refresh pre-aggregations for each of your security contexts.
 
-Each pre-aggregation is a list of dimensions and measures that you want to pre-aggregate.  E.g. see the `pre_aggregation` defined at the bottom of this model file:
+Each pre-aggregation is a list of dimensions and measures that you want to pre-aggregate. E.g. see the `pre_aggregation` defined at the bottom of this model file:
 
 ```yaml
 cubes:
   - name: customers
     sql_table: public.customers
- 
+
     dimensions:
       - name: id
         sql: id
@@ -55,19 +56,19 @@ cubes:
       - name: signed_up_at
         sql: created_at
         type: time
-        
+
     measures:
       - name: count
         type: count
-        title: "Number of Customers"
- 
+        title: 'Number of Customers'
+
     pre_aggregations:
       - name: customer_countries
         dimensions:
           - CUBE.country
 ```
 
-This simple pre-aggregation only has a `name` (required) and a single dimension.  This will lead to the following SQL being run (once) against your database:
+This simple pre-aggregation only has a `name` (required) and a single dimension. This will lead to the following SQL being run (once) against your database:
 
 ```sql
 SELECT
@@ -82,19 +83,19 @@ ORDER BY
 
 and the results will be stored as “a pre-aggregation”:
 
-| customers__country |
-| --- |
-| Australia |
-| Belgium |
-| Canada |
-| Germany |
-| … |
+| customers\_\_country |
+| -------------------- |
+| Australia            |
+| Belgium              |
+| Canada               |
+| Germany              |
+| …                    |
 
 ## How do pre-aggregations work?
 
-Now that a pre-aggregation exists, any incoming data requests from your components will first look to see if there are any **relevant** pre-aggregations that it can use:  
+Now that a pre-aggregation exists, any incoming data requests from your components will first look to see if there are any **relevant** pre-aggregations that it can use:
 
-1. If there are it will use them instead of hitting your database.  
+1. If there are it will use them instead of hitting your database.
 2. If there are not, it will query your database instead, as usual.
 
 So, the following query, from, say, a dropdown component, that wants to show a list of countries, can certainly use the above pre-aggregation, so it will 👍 (and thus it won’t hit your database).
@@ -112,7 +113,7 @@ So, the following query, from, say, a dropdown component, that wants to show a l
 }
 ```
 
-Whereas the below query is asking for the same data (`customers.country`), but it wants to filter by the `signed_up_at` dimension.  That dimension **is not** in the pre-aggregation, so there is **not** enough information in the pre-aggregation to serve this query, thus the query will not use the pre-aggregation and will instead go directly to your database.
+Whereas the below query is asking for the same data (`customers.country`), but it wants to filter by the `signed_up_at` dimension. That dimension **is not** in the pre-aggregation, so there is **not** enough information in the pre-aggregation to serve this query, thus the query will not use the pre-aggregation and will instead go directly to your database.
 
 ```sql
 {
@@ -131,6 +132,7 @@ Whereas the below query is asking for the same data (`customers.country`), but i
     }
 }
 ```
+
 ## How to know if my pre-aggregation is being used?
 
 You can verify whether your pre-aggregation is being used by checking the generated SQL in the **Embeddable [Data Playground](/data-modeling/testing-models)** or in your Chart’s Query.
@@ -151,7 +153,7 @@ p565c35d4728de3a1d2942475fe26095d2b0b7224de.user_actions_total_daily_action_coun
 
 In the **Embeddable [Data Playground](https://docs.embeddable.com/data-modeling/testing-models)**, the generated SQL preview will show the pre-aggregation table name in the `FROM` clause. This confirms that your query is using the pre-aggregated table.
 
-<ImageGrid images={["/img/dataplayground_preaggregation-min.png"]}/>
+<ImageGrid images={['/img/dataplayground_preaggregation-min.png']} />
 
 ### In your Embeddable chart
 
@@ -159,15 +161,11 @@ If you’ve built an Embeddable that uses a dataset containing a pre-aggregation
 
 In the video below, you’ll see that the **TableChart** we created shows the same `FROM` clause pattern in its query, confirming that the chart is using the pre-aggregation rather than querying the base table directly.
 
-<VideoComponent
-    src="/video/pre_aggregations_sqlChart-min.mp4"
-    width="1920"
-    height="1080"
-/>
+<VideoComponent src="/video/pre_aggregations_sqlChart-min.mp4" width="1920" height="1080" />
 
 ## Why do queries sometimes not use my pre-aggregations?
 
-Importantly, if you want a query to use pre-aggregations, rather than hit your database, it must match **exactly one pre-aggregation** (even if you have defined multiple in your models)**.** A query **cannot** combine the results of multiple pre-aggregations, or combine a pre-aggregation with data from your database.  Any given query must be fully answerable from a **single** pre-aggregation, otherwise the query will always skip pre-aggregations and go straight to your database (you can see detailed docs on the matching algorithm [here](https://cube.dev/docs/product/caching/matching-pre-aggregations)).
+Importantly, if you want a query to use pre-aggregations, rather than hit your database, it must match **exactly one pre-aggregation** (even if you have defined multiple in your models)**.** A query **cannot** combine the results of multiple pre-aggregations, or combine a pre-aggregation with data from your database. Any given query must be fully answerable from a **single** pre-aggregation, otherwise the query will always skip pre-aggregations and go straight to your database (you can see detailed docs on the matching algorithm [here](https://cube.dev/docs/product/caching/matching-pre-aggregations)).
 
 Let’s look at some common examples where people get tripped up:
 
@@ -185,7 +183,7 @@ Given a model with the following “count_by_countries” `pre_aggregation`:
 cubes:
   - name: customers
     sql_table: public.customers
-  
+
     dimensions:
         - name: id
           sql: id
@@ -197,19 +195,19 @@ cubes:
         - name: signed_up_at
           sql: created_at
           type: time
-          
+
       measures:
         - name: count
           type: count
           title: "Number of Customers"
-   
+
       pre_aggregations:
         - name: count_by_countries
           measures:
             - CUBE.count
           dimensions:
             - CUBE.country
-        
+
 ```
 
 the following (or similar) SQL will be run against your database to generate the pre-aggregation:
@@ -228,100 +226,84 @@ ORDER BY
 
 which, in turn, will lead to the following pre-aggregation (or similar) being cached:
 
-| customers__country | count |
-| --- | --- |
-| United States | 102 |
-| Australia | 64 |
-| Germany | 48 |
-| Canada | 30 |
-| Belgium | 5 |
-| … |  |
+| customers\_\_country | count |
+| -------------------- | ----- |
+| United States        | 102   |
+| Australia            | 64    |
+| Germany              | 48    |
+| Canada               | 30    |
+| Belgium              | 5     |
+| …                    |       |
 
 That means that any of **the following data queries can** (and will) **be served by this pre-aggregation** (rather than going to your database):
 
 1. Count by country:
-    
-    ```json
-    {
-        "query": {
-            "dimensions": [
-                "customers.country"
-            ],
-            "measures": [
-                "customers.count"
-            ]
-        }
-    }
-    ```
-    Cube can use all the columns and rows from the pre-aggregation above to serve this query, so it will use the pre-aggregation and it won't go to your database.
 
+   ```json
+   {
+     "query": {
+       "dimensions": ["customers.country"],
+       "measures": ["customers.count"]
+     }
+   }
+   ```
+
+   Cube can use all the columns and rows from the pre-aggregation above to serve this query, so it will use the pre-aggregation and it won't go to your database.
 
 2. Count customers:
-    
-    ```json
-    {
-        "query": {
-            "dimensions": [],
-            "measures": [
-                "customers.count"
-            ]
-        }
-    }
-    ```
-    Cube can sum up the “count” column from the above pre-aggregation, so will use the pre-aggregation to serve this query.
-    
-3. Count US customers:
-    
-    ```json
-    {
-        "query": {
-            "measures": [
-                "customers.count"
-            ],
-            "filters": [
-                {
-                    "member": "customers.country",
-                    "operator": "equals",
-                    "values": [
-                        "United States"
-                    ]
-                }
-            ]
-        }
-    }
-    ```
-    Cube will take the “count” from the “United States” row from the pre-aggregation.
-    
-4. Countries with more than 30 customers:
-    
-    ```json
-    {
-        "query": {
-            "dimensions": [
-                "customers.country"
-            ],
-            "measures": [],
-            "filters": [
-                {
-                    "member": "customers.count",
-                    "operator": "gt",
-                    "values": [
-                        "30"
-                    ]
-                }
-            ],
-            "order": [
-                [
-                    "customers.country",
-                    "asc"
-                ]
-            ]
-        }
-    }
-    ```
-    Cube will filter the pre-aggregation by the “count” column in the pre-aggregation and then sort the results by the “customers__country” column. 
 
-Any queries, however, where one or more of the **dimensions**, **measures** or **filters** in the query are **not** available in a pre-aggregation, will skip the pre-aggregations and hit the database instead.  
+   ```json
+   {
+     "query": {
+       "dimensions": [],
+       "measures": ["customers.count"]
+     }
+   }
+   ```
+
+   Cube can sum up the “count” column from the above pre-aggregation, so will use the pre-aggregation to serve this query.
+
+3. Count US customers:
+
+   ```json
+   {
+     "query": {
+       "measures": ["customers.count"],
+       "filters": [
+         {
+           "member": "customers.country",
+           "operator": "equals",
+           "values": ["United States"]
+         }
+       ]
+     }
+   }
+   ```
+
+   Cube will take the “count” from the “United States” row from the pre-aggregation.
+
+4. Countries with more than 30 customers:
+
+   ```json
+   {
+     "query": {
+       "dimensions": ["customers.country"],
+       "measures": [],
+       "filters": [
+         {
+           "member": "customers.count",
+           "operator": "gt",
+           "values": ["30"]
+         }
+       ],
+       "order": [["customers.country", "asc"]]
+     }
+   }
+   ```
+
+   Cube will filter the pre-aggregation by the “count” column in the pre-aggregation and then sort the results by the “customers\_\_country” column.
+
+Any queries, however, where one or more of the **dimensions**, **measures** or **filters** in the query are **not** available in a pre-aggregation, will skip the pre-aggregations and hit the database instead.
 
 For example this query:
 
@@ -337,7 +319,7 @@ For example this query:
 }
 ```
 
-is asking for the “id” and “country” dimensions.  This “country” dimension is in our pre-aggregation, but the “id” dimension is not. Cube will therefore go to your database instead to serve this query:
+is asking for the “id” and “country” dimensions. This “country” dimension is in our pre-aggregation, but the “id” dimension is not. Cube will therefore go to your database instead to serve this query:
 
 ```json
 SELECT
@@ -346,6 +328,7 @@ SELECT
 FROM
   public.customers AS "customers"
 ```
+
 because Cube can only use a pre-aggregation if it can, by itself, fully serve the given query.
 
 ### 2. Time filters must match the requested granularity
@@ -355,9 +338,9 @@ You can include `time_dimension` in your `pre_aggregations` (additionally to `me
 ```yaml
 cubes:
   - name: customers
-  
+
     ...
- 
+
     pre_aggregations:
 
       - name: count_by_week
@@ -385,7 +368,7 @@ GROUP BY
   1
 ```
 
-and 
+and
 
 ```sql
 SELECT
@@ -397,100 +380,93 @@ GROUP BY
   1
 ```
 
-respectively.  The results will be cached as pre-aggregations.
+respectively. The results will be cached as pre-aggregations.
 
-> Notice how the `time_dimension` in the `pre_aggregation` also takes a `granularity`.  In order to pre-aggregate by multiple granularities you must define a separate pre-aggregation for each granularity (like we’ve done in the "customers" model above).
-> 
+> Notice how the `time_dimension` in the `pre_aggregation` also takes a `granularity`. In order to pre-aggregate by multiple granularities you must define a separate pre-aggregation for each granularity (like we’ve done in the "customers" model above).
 
 For any incoming queries, Cube will try to find a pre-aggregation that can fully serve its **dimensions**, **measures** and **filters (including timeDimensions)**.
 
 Examples:
 
 1. Count by month:
-    
-    ```json
-    {
-        "query": {
-            "measures": [
-                "customers.count"
-            ],
-            "timeDimensions": [
-                {
-                    "dimension": "customers.signed_up_at",
-                    "granularity": "month"
-                }
-            ]
-        }
-    }
-    ```
-    This query perfectly matches the results in our “count_by_month” pre-aggregation, so Cube will use it.
-    
+
+   ```json
+   {
+     "query": {
+       "measures": ["customers.count"],
+       "timeDimensions": [
+         {
+           "dimension": "customers.signed_up_at",
+           "granularity": "month"
+         }
+       ]
+     }
+   }
+   ```
+
+   This query perfectly matches the results in our “count_by_month” pre-aggregation, so Cube will use it.
+
 2. Count of customers for last week:
-    
-    ```json
-    {
-        "query": {
-            "measures": [
-                "customers.count"
-            ],
-            "timeDimensions": [
-                {
-                    "dimension": "customers.signed_up_at",
-                    "dateRange": "Last week"
-                }
-            ]
-        }
-    }
-    ```
-    Cube can filter our “count_by_week” pre-aggregation to the row from last week in order to serve this query.
-    
-3. Yesterday: 
-    
-    ```json
-    {
-        "query": {
-            "measures": [
-                "customers.count"
-            ],
-            "timeDimensions": [
-                {
-                    "dimension": "customers.signed_up_at",
-                    "dateRange": "Yesterday"
-                }
-            ]
-        }
-    }
-    ```
-    Neither of our pre-aggregations can answer this query (as there isn't a "day" granularity and you can't derive "day" from "week" or "month"), so **Cube will skip pre-aggregations** for this query and get it instead from our database.
-    
-4. 2024: 
-    
-    ```json
-    {
-        "query": {
-            "measures": [
-                "customers.count"
-            ],
-            "timeDimensions": [
-                {
-                    "dimension": "customers.signed_up_at",
-                    "dateRange": ["2024-01-01", "2024-12-31"]
-                }
-            ]
-        }
-    }
-    ```
-    We don’t have a “year” pre-aggregation, but Cube is clever.  We have a “month” pre-aggregation, and Cube can use that to sum up the counts for each month in 2024, and thus Cube **will** hit our “count_by_month” pre-aggregation to serve this query.
-    
+
+   ```json
+   {
+     "query": {
+       "measures": ["customers.count"],
+       "timeDimensions": [
+         {
+           "dimension": "customers.signed_up_at",
+           "dateRange": "Last week"
+         }
+       ]
+     }
+   }
+   ```
+
+   Cube can filter our “count_by_week” pre-aggregation to the row from last week in order to serve this query.
+
+3. Yesterday:
+
+   ```json
+   {
+     "query": {
+       "measures": ["customers.count"],
+       "timeDimensions": [
+         {
+           "dimension": "customers.signed_up_at",
+           "dateRange": "Yesterday"
+         }
+       ]
+     }
+   }
+   ```
+
+   Neither of our pre-aggregations can answer this query (as there isn't a "day" granularity and you can't derive "day" from "week" or "month"), so **Cube will skip pre-aggregations** for this query and get it instead from our database.
+
+4. 2024:
+
+   ```json
+   {
+     "query": {
+       "measures": ["customers.count"],
+       "timeDimensions": [
+         {
+           "dimension": "customers.signed_up_at",
+           "dateRange": ["2024-01-01", "2024-12-31"]
+         }
+       ]
+     }
+   }
+   ```
+
+   We don’t have a “year” pre-aggregation, but Cube is clever. We have a “month” pre-aggregation, and Cube can use that to sum up the counts for each month in 2024, and thus Cube **will** hit our “count_by_month” pre-aggregation to serve this query.
 
 ### 3. If measures aren’t “additive”, this can cause cache-misses
 
-Above we have described multiple situations where Cube will serve an incoming data query, not just by returning a subset of the rows in the pre-aggregation, but by actually aggregating the counts from the rows.  
+Above we have described multiple situations where Cube will serve an incoming data query, not just by returning a subset of the rows in the pre-aggregation, but by actually aggregating the counts from the rows.
 
-E.g. in the last example above, Cube will calculate the number of customers for 2024 by summing up the counts for the 12 months of 2024.  This works because measures of type “count” are “**additive**”.  i.e. if you were to query your database directly for a count of customers who signed up in 2024, it will return exactly the same number as if you asked for the counts of each month in 2024 and sum them together.
+E.g. in the last example above, Cube will calculate the number of customers for 2024 by summing up the counts for the 12 months of 2024. This works because measures of type “count” are “**additive**”. i.e. if you were to query your database directly for a count of customers who signed up in 2024, it will return exactly the same number as if you asked for the counts of each month in 2024 and sum them together.
 
 > **Additivity** is “a property of measures that determine whether measure values, once calculated for a set of dimensions, can be [accurately] further aggregated to calculate measure values for a subset of these dimensions” ([source](https://cube.dev/docs/product/data-modeling/concepts#measure-additivity)).
-> 
 
 The only additive measures are:
 
@@ -502,8 +478,8 @@ The only additive measures are:
 
 All other measures ([avg,](https://cube.dev/docs/reference/data-model/types-and-formats#avg) [count_distinct](https://cube.dev/docs/reference/data-model/types-and-formats#count_distinct), etc.) are not:
 
-- `avg` calculates the average of a set of numbers.  If January has three numbers: 3, 5 and 4 (which gives an average of 4) and February has just one number: 2 (whose average is obviously 2),   then the average of January and February should be (3+5+4+2)/4 = 3.5.  But if all you know are the two averages, 4 and 2, there is no way to accurately derive the correct average (you could average 4 and 2 to get 3, but this is incorrect).  Thus `avg` measures are **not** additive.
-- `count_distinct` counts, not the total number of something (say, total visitors to a shop), but the unique (or distinct) number of something (say, unique visitors).  If there were 5 unique visitors in January and 3 unique visitors in February, it does not mean that were (5+3) 8 unique visitors in January and February.  Some of these visitors may have visited in both January and February, so the actual number may be as low as 5 (but may be higher).  Thus `count_distinct` measures are also **not** additive.
+- `avg` calculates the average of a set of numbers. If January has three numbers: 3, 5 and 4 (which gives an average of 4) and February has just one number: 2 (whose average is obviously 2), then the average of January and February should be (3+5+4+2)/4 = 3.5. But if all you know are the two averages, 4 and 2, there is no way to accurately derive the correct average (you could average 4 and 2 to get 3, but this is incorrect). Thus `avg` measures are **not** additive.
+- `count_distinct` counts, not the total number of something (say, total visitors to a shop), but the unique (or distinct) number of something (say, unique visitors). If there were 5 unique visitors in January and 3 unique visitors in February, it does not mean that were (5+3) 8 unique visitors in January and February. Some of these visitors may have visited in both January and February, so the actual number may be as low as 5 (but may be higher). Thus `count_distinct` measures are also **not** additive.
 
 And so, because Cube cares about giving correct numbers back, if your pre-aggregation is using non-additive measures (like `avg` and `count_distinct`) then it can still use the pre-aggregation if the query can be answered by returning a subset of the rows from the pre-aggregation, but if it would require aggregating them together in some way then it can’t use the pre-aggregation, and Cube will choose to skip the pre-aggregation and go to your database instead.
 
@@ -513,38 +489,39 @@ You may be wondering: what if I want to use pre-aggregations for non-additive me
 
 There are a few workarounds:
 
-1. `avg` is, in the end, just a calculation of a total divided by a count.  Both a total and a count **are** additive, so you can separate the calculation into two additive measures and then calculate the average dynamically (notice that `average_price` below is purposefully **not** part of the pre-aggregation):
-    
-    ```yaml
-    cubes:
-      - name: customers
-      
-        ...
-        
-        measures:
-          - name: total_price
-            sql: price
-            type: sum
-          - name: count
-            type: count
-          - name: average_price
-            sql: {total_price} / {count}
-            type: number
-     
-        pre_aggregations:
-          - name: price_and_count
-            measures:
-              - CUBE.total_price
-              - CUBE.count
-            
-    ```
-    
-2. `count_distinct` is not additive (as explained in the previous section) but Cube has introduced a useful measure type called `count_distinct_approx` which tries to approximate the number of unique (distinct) values (learn more [here](https://cube.dev/docs/reference/data-model/types-and-formats#count_distinct_approx)).  It is useful if exact numbers are not essential and a rough estimate is sufficient.  
+1. `avg` is, in the end, just a calculation of a total divided by a count. Both a total and a count **are** additive, so you can separate the calculation into two additive measures and then calculate the average dynamically (notice that `average_price` below is purposefully **not** part of the pre-aggregation):
 
-    Just bear in mind:
-    - the more rows from a pre-aggregation that you’re combining, the worse the approximation will be (e.g. if you’re calculating 2024 by aggregating 365 separate days of a `count_distinct_approx` measure, please don’t expect the result to be very accurate).
-    - unfortunately not all database types support `count_distinct_approx`.  Check your specific database (e.g. [here](https://cube.dev/docs/product/configuration/data-sources/mysql#count_distinct_approx) you can see that MySQL doesn’t support it)
-3. And finally, you **can** use non-additive measures in pre-aggregations confidently as long as your queries match the row granularity of your pre-aggregations perfectly.  E.g. if your pre-aggregation shows `count_distinct` by `week` and your query requests that `count_distinct` measure for a particular week, Cube will use the pre-aggregation and return a perfectly accurate number.
+   ```yaml
+   cubes:
+     - name: customers
+
+       ...
+
+       measures:
+         - name: total_price
+           sql: price
+           type: sum
+         - name: count
+           type: count
+         - name: average_price
+           sql: {total_price} / {count}
+           type: number
+
+       pre_aggregations:
+         - name: price_and_count
+           measures:
+             - CUBE.total_price
+             - CUBE.count
+
+   ```
+
+2. `count_distinct` is not additive (as explained in the previous section) but Cube has introduced a useful measure type called `count_distinct_approx` which tries to approximate the number of unique (distinct) values (learn more [here](https://cube.dev/docs/reference/data-model/types-and-formats#count_distinct_approx)). It is useful if exact numbers are not essential and a rough estimate is sufficient.
+
+   Just bear in mind:
+   - the more rows from a pre-aggregation that you’re combining, the worse the approximation will be (e.g. if you’re calculating 2024 by aggregating 365 separate days of a `count_distinct_approx` measure, please don’t expect the result to be very accurate).
+   - unfortunately not all database types support `count_distinct_approx`. Check your specific database (e.g. [here](https://cube.dev/docs/product/configuration/data-sources/mysql#count_distinct_approx) you can see that MySQL doesn’t support it)
+
+3. And finally, you **can** use non-additive measures in pre-aggregations confidently as long as your queries match the row granularity of your pre-aggregations perfectly. E.g. if your pre-aggregation shows `count_distinct` by `week` and your query requests that `count_distinct` measure for a particular week, Cube will use the pre-aggregation and return a perfectly accurate number.
 
 ## Refreshing pre-aggregations
 
@@ -559,12 +536,12 @@ If you don’t define a [refresh_key](https://cube.dev/docs/product/data-modelin
 For predictable schedules, use the **`every`** property. This lets you define how often Cube should rebuild the pre-aggregation:
 
 ```yaml
-    pre_aggregations:
-      - name: customer_countries
-        dimensions:
-          - CUBE.country
-        refresh_key:
-          every: 1 day
+pre_aggregations:
+  - name: customer_countries
+    dimensions:
+      - CUBE.country
+    refresh_key:
+      every: 1 day
 ```
 
 In this example, the pre-aggregation is refreshed once per day. This accepts time expressions like  `1 second`, `30 minutes`, `2 hours`, `1 day`, `1 week`, `1 month`, `1 year`.
@@ -574,12 +551,12 @@ For example `every: 30 minutes` or `every: 2 hours`.
 You can also be more precise with a CRON string:
 
 ```yaml
-    pre_aggregations:
-      - name: customer_countries
-        dimensions:
-          - CUBE.country
-        refresh_key:
-          every: "0 8 * * *"
+pre_aggregations:
+  - name: customer_countries
+    dimensions:
+      - CUBE.country
+    refresh_key:
+      every: '0 8 * * *'
 ```
 
 This runs every day at 08:00. See the [supported CRON formats](https://cube.dev/docs/product/data-modeling/reference/cube#supported-cron-formats) for more options.
@@ -589,12 +566,12 @@ This runs every day at 08:00. See the [supported CRON formats](https://cube.dev/
 Sometimes you only want to rebuild a pre-aggregation when the source data changes. In that case, use the `sql` property to define a query that checks for updates:
 
 ```yaml
-    pre_aggregations:
-      - name: customer_countries
-        dimensions:
-          - CUBE.country
-        refresh_key:
-          sql: SELECT MAX(created_at) FROM public.customers
+pre_aggregations:
+  - name: customer_countries
+    dimensions:
+      - CUBE.country
+    refresh_key:
+      sql: SELECT MAX(created_at) FROM public.customers
 ```
 
 As we haven’t defined `every`, so when using the `sql` parameter the default interval is **10 seconds** for `every` property. If the result changes, the pre-aggregation is refreshed.
@@ -604,38 +581,39 @@ As we haven’t defined `every`, so when using the `sql` parameter the default i
 You can also combine SQL with your specific time interval. This lets Cube check for changes on a schedule:
 
 ```yaml
-    pre_aggregations:
-      - name: customer_countries
-        dimensions:
-          - CUBE.country
-        refresh_key:
-          every: 1 hour
-          sql: SELECT MAX(created_at) FROM public.customers
+pre_aggregations:
+  - name: customer_countries
+    dimensions:
+      - CUBE.country
+    refresh_key:
+      every: 1 hour
+      sql: SELECT MAX(created_at) FROM public.customers
 ```
 
 In this example the query every hour. If the result has changed since the last run, the pre-aggregation is refreshed.
 
 <Callout emoji="💡">
-You can’t combine a CRON string with `sql` in the same refresh key. Doing so will cause a compilation error.
+  You can’t combine a CRON string with `sql` in the same refresh key. Doing so will cause a
+  compilation error.
 </Callout>
 
 ## Performing joins across cubes in your pre-aggregations
 
-All the examples so far have shown pre-aggregations using just the dimensions and measures from the cube in which it is defined.  This is, however, not a requirement at all.  You can easily define a pre-aggregation that uses dimensions and measures from multiple cubes, as long as the appropriate `joins` have been defined.
+All the examples so far have shown pre-aggregations using just the dimensions and measures from the cube in which it is defined. This is, however, not a requirement at all. You can easily define a pre-aggregation that uses dimensions and measures from multiple cubes, as long as the appropriate `joins` have been defined.
 
 E.g. here you can see our `pre_aggregation` uses two dimensions (”make” and “model”) from the “vehicles” cube:
 
 ```yaml
 cubes:
   - name: person
-  
+
     ...
-      
+
     joins:
       - name: vehicles
         sql: "{CUBE}.id = {vehicles}.owner_id"
         relationship: one_to_many
-      
+
     pre_aggregations:
       - name: person_vehicles
         dimensions:
@@ -650,9 +628,9 @@ cubes:
 
 ## Indexes
 
-To get the best performance out of your pre-aggregations you will likely want to define indexes too.  
+To get the best performance out of your pre-aggregations you will likely want to define indexes too.
 
-Cube recommends "for most queries, there should be at least one index that makes a particular query scan very little amount of data”.  You can read all about indexes [here](https://cube.dev/docs/product/caching/using-pre-aggregations#using-indexes).
+Cube recommends "for most queries, there should be at least one index that makes a particular query scan very little amount of data”. You can read all about indexes [here](https://cube.dev/docs/product/caching/using-pre-aggregations#using-indexes).
 
 ## Handling incremental data loads
 
@@ -686,9 +664,10 @@ pre_aggregations:
 - `partition_granularity: day` splits the pre-aggregation into daily partitions, making it possible to refresh only the days that change instead of rebuilding the whole year.
 - Partitioned pre-aggregations require both a `time_dimension` and a `granularity`. See the Cube docs on [supported values](https://cube.dev/docs/product/data-modeling/reference/pre-aggregations#partition_granularity).
 - With `incremental: true` and `update_window: 3 day`, Cube refreshes only the last three partitions each day. Learn more about [`update_window`](https://cube.dev/docs/product/data-modeling/reference/pre-aggregations#update_window) and [`incremental`](https://cube.dev/docs/product/data-modeling/reference/pre-aggregations#incremental) .
-<Callout> 
-Without `update_window`, Cube refreshes partitions strictly according to `partition_granularity` (in this case, just the last day).
-</Callout>
+  <Callout>
+    Without `update_window`, Cube refreshes partitions strictly according to `partition_granularity`
+    (in this case, just the last day).
+  </Callout>
 
 ## Next Steps
 

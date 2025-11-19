@@ -24,6 +24,7 @@ Any changes pushed to the main branch are automatically deployed to https://docs
 Use `git clone git@github.com:embeddable-hq/handbook.git`
 
 Troubleshooting:
+
 - You may need to [generate an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [add the SSH key to your github account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 
 ## Local Development
@@ -41,13 +42,15 @@ Finally, run `pnpm format` to format your changes with prettier.
 The cookie banner will constantly appear.
 
 Hack to fix this:
- - in `_document.tsx` update line 16 to be: `})(window,document,'script','dataLayer','DO-NOT-COMMIT');`
+
+- in `_document.tsx` update line 16 to be: `})(window,document,'script','dataLayer','DO-NOT-COMMIT');`
 
 ## Git UI
 
 These are popular git UI tools:
- - [Github Desktop](https://github.com/desktop/desktop)
- - [Sourcetree](https://www.sourcetreeapp.com/)
+
+- [Github Desktop](https://github.com/desktop/desktop)
+- [Sourcetree](https://www.sourcetreeapp.com/)
 
 ## Testing final app
 

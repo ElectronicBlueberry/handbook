@@ -1,15 +1,12 @@
-import React, { Children } from "react";
+import React, { Children } from 'react';
 
 const CardGrid = ({ children, className }) => {
-
   const childrenLength = Children.toArray(children).length;
-  const columns = childrenLength === 1 ? "1fr" : "repeat(2, 1fr)";
+  const columns = childrenLength === 1 ? '1fr' : 'repeat(2, 1fr)';
 
   return (
     <>
-      <div className={className ? className : "card-grid"}>
-        {children}
-      </div>
+      <div className={className ? className : 'card-grid'}>{children}</div>
 
       <style jsx>{`
         .card-grid {

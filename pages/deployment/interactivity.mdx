@@ -6,23 +6,18 @@ You can interact with your `<em-beddable>` as if it is a part of your own codeba
 
 You can pass in variables to your Embeddable by passing a `variables` attribute in your web component that contains an arbitrary JSON string. You can also update these variables in response to actions in your app. This will cause the Embeddable to refresh and display data based on the new variable values.
 
-<VideoComponent
-    src="/video/client-side-variables.mp4"
-    width="1250"
-    height="616"
-/>
-
+<VideoComponent src="/video/client-side-variables.mp4" width="1250" height="616" />
 
 Here is an example of passing variables from a simple client app to your Embeddable:
 
 ```tsx
 const securityToken = await getSecurityTokenFromYourBackend();
 const variables = {
-  'Country': 'Germany',
-  'Date range': { from: new Date(2024, 1, 12), to: new Date() }
+  Country: 'Germany',
+  'Date range': { from: new Date(2024, 1, 12), to: new Date() },
 };
 // Embeddable React component defined as per example below
-<Embeddable token={securityToken} variables={variables} />
+<Embeddable token={securityToken} variables={variables} />;
 ```
 
 Note that variable names must exactly match the variable names defined in your dashboard. You can learn more about dashboard variables [here](/dashboards/interactivity).
@@ -50,10 +45,7 @@ function handleVariableChange(e) {
 }
 
 // Embeddable React component defined as per example below
-<Embeddable
-  token={securityToken}
-  onVariablesChange={handleVariableChange}
-/>
+<Embeddable token={securityToken} onVariablesChange={handleVariableChange} />;
 ```
 
 ## Handle Component Errors
@@ -75,10 +67,7 @@ function handleEmbeddableError(e) {
 }
 
 // Embeddable React component defined as per example below
-<Embeddable
-  token={securityToken}
-  onEmbeddableError={handleEmbeddableError}
-/>
+<Embeddable token={securityToken} onEmbeddableError={handleEmbeddableError} />;
 ```
 
 You can use this to log errors, show error messages to users, or take other actions in response to errors. You could also use this to send the error details to your back-end for further processing, such as alerting or logging.
@@ -101,17 +90,14 @@ function handleComponentsLoad() {
 // Embeddable React component defined as per example below
 <>
   {isLoading && <div>Loading...</div>}
-  <Embeddable
-    token={securityToken}
-    onComponentsLoad={handleComponentsLoad}
-  />
-</>
+  <Embeddable token={securityToken} onComponentsLoad={handleComponentsLoad} />
+</>;
 ```
 
 ## Pass Client Context
 
 Client Context allows you to pass information about the user or environment to your React components. This is accomplished by passing a `client-context` attribute in your web component that contains an arbitrary JSON string. This can be useful for localization, theming, or other context-specific behavior. You can [learn more here](/development/client-context), including detailed examples.
- 
+
 ## Complete Example
 
 Here is a complete example of a React component that uses the Embeddable component and demonstrates all of the above features. First is the main `Dashboard` component that uses the `Embeddable` component:
@@ -184,11 +170,7 @@ const Embeddable: React.FC<Props> = ({
 
   function handleVariableChange(e: { detail: Detail[] }) {
     if (onVariablesChange) {
-      onVariablesChange(
-        Object.fromEntries(
-          e.detail.map((c: any) => [c.variableName, c.newValue]),
-        ),
-      );
+      onVariablesChange(Object.fromEntries(e.detail.map((c: any) => [c.variableName, c.newValue])));
     }
   }
 
@@ -203,15 +185,9 @@ const Embeddable: React.FC<Props> = ({
       ref.current.addEventListener('embeddableError', handleEmbeddableError);
 
       return () => {
-        ref.current?.removeEventListener(
-          'variablesChange',
-          handleVariableChange,
-        );
+        ref.current?.removeEventListener('variablesChange', handleVariableChange);
         ref.current?.removeEventListener('componentsLoad', onComponentsLoad);
-        ref.current?.removeEventListener(
-          'embeddableError',
-          handleEmbeddableError,
-        );
+        ref.current?.removeEventListener('embeddableError', handleEmbeddableError);
       };
     }
   }, []);

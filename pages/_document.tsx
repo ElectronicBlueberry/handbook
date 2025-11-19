@@ -1,12 +1,12 @@
 // pages/_document.tsx
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
   render() {
     return (
       <Html>
         <Head>
-          {process.env.NODE_ENV !== "development" && (
+          {process.env.NODE_ENV !== 'development' && (
             <script
               dangerouslySetInnerHTML={{
                 __html: `
@@ -26,7 +26,7 @@ class MyDocument extends Document {
               src="https://www.googletagmanager.com/ns.html?id=GTM-5JVQ8XW"
               height="0"
               width="0"
-              style={{ display: "none", visibility: "hidden" }}
+              style={{ display: 'none', visibility: 'hidden' }}
             />
           </noscript>
           <Main />

@@ -1,92 +1,96 @@
 # Defining Components
 
-You can create **custom React components** in Embeddable using any JS libraries you like. 
+You can create **custom React components** in Embeddable using any JS libraries you like.
 
 Key capabilities include:
 
 - **Define Inputs**: Make re-usable components by defining inputs your team can customize in the builder.
 - **Load Data**: Dynamically fetch data from your database via Embeddable's [`loadData`](/development/loading-data) function.
-- **Pass Events**: Capture user actions (e.g. button clicks) and send them back to Embeddable for interactive features like filtering. 
+- **Pass Events**: Capture user actions (e.g. button clicks) and send them back to Embeddable for interactive features like filtering.
 
 ## How It Works
 
 <Steps>
 
-### **Build Your React Component (`.tsx`)**  
-  Write a **standard React component** - handling your UI, props, and business logic.  
+### **Build Your React Component (`.tsx`)**
 
-  For example, this simple **text component** displays a title and body:
+Write a **standard React component** - handling your UI, props, and business logic.
 
-  ```tsx
-  // src/components/TextComponent/index.tsx
+For example, this simple **text component** displays a title and body:
 
-  import React from 'react';
+```tsx
+// src/components/TextComponent/index.tsx
 
-  type Props = {
-    title: string;
-    body: string;
-  };
+import React from 'react';
 
-  export default ({ title, body }: Props) => {
-    return (
-      <div>
-        <h1>{title}</h1>
-        <p>{body}</p>
-      </div>
-    );
-  };
-  ```
+type Props = {
+  title: string;
+  body: string;
+};
 
-  There's nothing Embeddable-specific about this code - it's just standard React. 
+export default ({ title, body }: Props) => {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <p>{body}</p>
+    </div>
+  );
+};
+```
 
-### **Configure in `.emb.ts`**  
-  In a **companion `.emb.ts` file**, define **inputs** and other configuration, including how to [load data](/development/loading-data). This file tells Embeddable **how** to expose the component in the no-code builder so it can be configured by your team without code:
+There's nothing Embeddable-specific about this code - it's just standard React.
 
-  ```tsx
-  // src/components/TextComponent/TextComponent.emb.ts
+### **Configure in `.emb.ts`**
 
-  import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
-  import Component from './index';
-  import { Inputs } from '@embeddable.com/react';
+In a **companion `.emb.ts` file**, define **inputs** and other configuration, including how to [load data](/development/loading-data). This file tells Embeddable **how** to expose the component in the no-code builder so it can be configured by your team without code:
 
-  export const meta = {
-    name: 'TextComponent', // a unique identifier that must match the file name (i.e. TextComponent.emb.ts)
-    label: 'Text component', // user-facing name in the builder
-    inputs: [
-      {
-        name: 'title', // unique identifier for this input
-        type: 'string',  // determines the UI control to render (i.e. a text field in this case)
-        label: 'Title', // the label shown in the builder
-      },
-      {
-        name: 'body', // unique identifier for this input
-        type: 'string', // renders a second text field. 
-        label: 'Body', // the label shown in the builder
-      }
-    ]
-  } as const satisfies EmbeddedComponentMeta;
+```tsx
+// src/components/TextComponent/TextComponent.emb.ts
 
-  //The function that tells the SDK to include this component in the no-code builder.
-  export default defineComponent(Component, meta, {
-    props: (inputs: Inputs<typeof meta>) => {
-      return {
-        // the inputs are passed through to the React component as props
-        title: inputs.title,
-        body: inputs.body
-      };
-    }
-  });
-  ```
+import { EmbeddedComponentMeta, defineComponent } from '@embeddable.com/react';
+import Component from './index';
+import { Inputs } from '@embeddable.com/react';
+
+export const meta = {
+  name: 'TextComponent', // a unique identifier that must match the file name (i.e. TextComponent.emb.ts)
+  label: 'Text component', // user-facing name in the builder
+  inputs: [
+    {
+      name: 'title', // unique identifier for this input
+      type: 'string', // determines the UI control to render (i.e. a text field in this case)
+      label: 'Title', // the label shown in the builder
+    },
+    {
+      name: 'body', // unique identifier for this input
+      type: 'string', // renders a second text field.
+      label: 'Body', // the label shown in the builder
+    },
+  ],
+} as const satisfies EmbeddedComponentMeta;
+
+//The function that tells the SDK to include this component in the no-code builder.
+export default defineComponent(Component, meta, {
+  props: (inputs: Inputs<typeof meta>) => {
+    return {
+      // the inputs are passed through to the React component as props
+      title: inputs.title,
+      body: inputs.body,
+    };
+  },
+});
+```
 
 Two things to notice:
-1. `inputs` tells Embeddable which input fields to show in the UI when using this component.  In this case, two text input fields.
+
+1. `inputs` tells Embeddable which input fields to show in the UI when using this component. In this case, two text input fields.
 2. `props` is a function that takes those `inputs` and maps them onto the `props` that should be passed into the React component when rendering.
 
 <a name="push-to-embeddable"></a>
-### **Push to Embeddable**  
-  Run `npm run embeddable:dev` to test out your component, and when you’re happy with it, [**push**](/development/pushing-code) your component code to Embeddable. Your teammates can now **drag, drop, and configure** it in their dashboards - no extra coding required.
+### **Push to Embeddable** Run `npm run embeddable:dev` to test out your component, and when you’re
+happy with it, [**push**](/development/pushing-code) your component code to Embeddable. Your
+teammates can now **drag, drop, and configure** it in their dashboards - no extra coding required.
 
-  <ImageGrid images={["/img/hello-world-edit.png", "/img/hello-world-component.png"]} />
+<ImageGrid images={['/img/hello-world-edit.png', '/img/hello-world-component.png']} />
 
 </Steps>
 
@@ -99,8 +103,8 @@ Below is a simple **KPI chart** component that loads data from your database:
 
 import React from 'react';
 import { DataResponse, Measure } from '@embeddable.com/core';
-import Loading from '../util/Loading'
-import Error from '../util/Error'
+import Loading from '../util/Loading';
+import Error from '../util/Error';
 
 type Props = {
   title?: string;
@@ -109,15 +113,14 @@ type Props = {
 };
 
 export default ({ title, metric, results }: Props) => {
-
   const { isLoading, data, error } = results;
 
-  if(isLoading) {
-    return <Loading />
+  if (isLoading) {
+    return <Loading />;
   }
 
-  if(error) {
-    return <Error msg={error}/>;
+  if (error) {
+    return <Error msg={error} />;
   }
 
   const value = results.data?.[0]?.[metric.name] ?? 'No data';
@@ -142,7 +145,7 @@ import Component from './index';
 
 export const meta = {
   name: 'KPIChart', // an identifier - must match KPIChart.emb.ts
-  label: 'KPI Chart', // user-facing name in the builder 
+  label: 'KPI Chart', // user-facing name in the builder
   inputs: [
     {
       name: 'title',
@@ -158,12 +161,12 @@ export const meta = {
       name: 'metric',
       type: 'measure', // shows a dropdown of measures (defined in your data models)
       label: 'KPI',
-      array: false, // specifies that users can select a single measure 
+      array: false, // specifies that users can select a single measure
       config: {
         dataset: 'ds', // restricts measure options to the selected dataset
-      }
+      },
     },
-  ]
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 //The function that tells the SDK to include this component in the no-code builder.
@@ -171,12 +174,13 @@ export default defineComponent(Component, meta, {
   props: (inputs: Inputs<typeof meta>) => {
     return {
       ...inputs, // the inputs are passed through to the component as props
-      results: loadData({ // fetches data from your database and passes it to your component
+      results: loadData({
+        // fetches data from your database and passes it to your component
         from: inputs.ds,
-        measures: [inputs.metric], 
-      })
+        measures: [inputs.metric],
+      }),
     };
-  }
+  },
 });
 ```
 
@@ -196,6 +200,7 @@ This is the way we recommend, as it will allow you to have both your customized 
 [Visit our repo](https://github.com/embeddable-hq/vanilla-components-v1/) and copy the component code from the Vanilla component you want to extend. For example, if you want to extend the Bar Chart, copy the code from `src/components/BarChart/index.tsx` and `src/components/BarChart/BarChart.emb.ts`.
 
 ### Create Your Own Component
+
 Create a new folder in `src/components/` with your component name, and paste the copied code into it. Then, update the component name in the `.emb.ts` file to match your new component name. Make sure your component's `.emb.ts` file name matches the component name, e.g. if your component is named `MyBarChart`, the file should be `MyBarChart.emb.ts`.
 
 </Steps>
@@ -207,7 +212,11 @@ Some components are more complex than others, and a few of them call on various 
 ### Override the Vanilla Component Entirely
 
 <Callout emoji="⚠️">
-  <p><strong>Important:</strong> if you follow this route, you will no longer receive updates to the original component. They'll still come through when you update the package, but because this involves disabling a particular chart, you won't see them.</p>
+  <p>
+    <strong>Important:</strong> if you follow this route, you will no longer receive updates to the
+    original component. They'll still come through when you update the package, but because this
+    involves disabling a particular chart, you won't see them.
+  </p>
 </Callout>
 
 If you want to completely override a Vanilla component, you can do so by disabling it in the `embeddable.config.ts` file. This will remove it from the builder and allow you to use your own version instead. The process for creating your own component is [the same as above](#copy-the-component-and-make-it-your-own) (you still need to copy the code), but you won't need to rename the component - you can use the same folder and component name as the original Vanilla component.

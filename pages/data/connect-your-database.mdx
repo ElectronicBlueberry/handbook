@@ -1,6 +1,6 @@
 # Connect Your Database
 
-You can connect one or more databases to Embeddable. We call these **Connections**. 
+You can connect one or more databases to Embeddable. We call these **Connections**.
 
 - **Read-only access:** Embeddable only reads from your database - it never writes to it.
 - **Connection options:** Connect directly or via SSH.
@@ -10,11 +10,11 @@ You can connect one or more databases to Embeddable. We call these **Connections
 
 Use our **Connections API** to connect Embeddable to your database(s).
 
- - You can call the API directly using tools like [Postman](https://www.postman.com/) or Bruno (link below)
+- You can call the API directly using tools like [Postman](https://www.postman.com/) or Bruno (link below)
 
-<Bruno/>
+<Bruno />
 
- - Or you can use the handy sample javascript scripts in [your repo](https://github.com/embeddable-hq/embeddable-boilerplate/tree/main/src/embeddable.com/scripts).
+- Or you can use the handy sample javascript scripts in [your repo](https://github.com/embeddable-hq/embeddable-boilerplate/tree/main/src/embeddable.com/scripts).
 
 The below is a `CREATE` action, but all `CRUD` operations are available.
 
@@ -44,17 +44,19 @@ const resp = await fetch(`${BASE_URL}/api/v1/connections`, {
     }),
 });
 ```
+
 - `apiKey`: This is located on the homepage of your workspace.
 - `connectionName`: Unique name for the database connection within your workspace.
 - `type`: Which driver to use (postgres, bigquery, etc). Find your database [here](./credentials).
 - `credentials`: A javascript object containing the credentials expected by the driver:
-    * The necessary credentials for each database are available [here](./credentials). 
-    * Credentials are securely encrypted.
-    * We strongly suggest creating a **read-only** database user for each connection.
+  - The necessary credentials for each database are available [here](./credentials).
+  - Credentials are securely encrypted.
+  - We strongly suggest creating a **read-only** database user for each connection.
 
 ## CRUD Operations
 
 Refer to the specific scripts in [your repo](https://github.com/embeddable-hq/embeddable-boilerplate/tree/main/src/embeddable.com/scripts) to easily manage connections:
+
 - **Create a connection:** `connection-create.cjs`
 - **List connections:** `connection-list.cjs`
 - **Read a specific connection:** `connection-read.cjs`
@@ -69,11 +71,11 @@ node src/embeddable.com/scripts/<script>.cjs
 
 Or use tools like [Postman](https://www.postman.com/) or Bruno (link below).
 
-<Bruno/>
+<Bruno />
 
 ## Testing Your Connection
 
-To confirm your connection works, use the `/test` endpoint, which is also available as a [script](https://github.com/embeddable-hq/embeddable-boilerplate/tree/main/src/embeddable.com/scripts) in your repo. 
+To confirm your connection works, use the `/test` endpoint, which is also available as a [script](https://github.com/embeddable-hq/embeddable-boilerplate/tree/main/src/embeddable.com/scripts) in your repo.
 
 ```javascript
 const apiKey = '<your API Key>';
@@ -82,11 +84,11 @@ const BASE_URL = 'https://api.us.embeddable.com'; // US API
 // const BASE_URL = 'https://api.eu.embeddable.com'; // EU API
 
 fetch(`${BASE_URL}/api/v1/connections/${connectionName}/test`, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-    },
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${apiKey}`,
+  },
 });
 ```
 
@@ -104,17 +106,19 @@ cubes:
 
 ## Multiple databases
 
-Embeddable supports connecting to **multiple databases** out-of-the-box.  
+Embeddable supports connecting to **multiple databases** out-of-the-box.
 
-To do so, simply: 
+To do so, simply:
+
 - create a separate **connection** for each database (see "Connections API" above)
 - then point each of your **models** at the appropriate **connection** (see "Using your connection" above).
 
 Sometimes, however, you'll want to point a model at different databases, e.g:
- - to run against prod vs qa vs test databases.
- - to connect to different databases depending on the customer.
 
-In those cases you'll need use what we call **Environments**.  Learn more [here](./environments).
+- to run against prod vs qa vs test databases.
+- to connect to different databases depending on the customer.
+
+In those cases you'll need use what we call **Environments**. Learn more [here](./environments).
 
 ## IP Whitelisting
 
@@ -122,9 +126,7 @@ You can restrict database access by allowing only Embeddable’s IPs ([learn mor
 
 ## SSH Connections (Bastion Host)
 
-<Callout emoji="💬">
-  Please contact us for help with this.
-</Callout>
+<Callout emoji="💬">Please contact us for help with this.</Callout>
 
 Embeddable also supports connecting to your database via SSH connection. The process works as follows:
 
@@ -138,17 +140,20 @@ Details [here](/deployment/deployment-regions#ips-to-whitelist).
 
 This will be used for establishing the SSH tunnel.
 
-- **US :** 
+- **US :**
+
 ```bash
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMDhwuLvNxkgh7armnFQ94MjFyA5EnAAYol9uXcj0Xi jump-server-us@embeddable.com
 ```
 
-- **EU :** 
+- **EU :**
+
 ```bash
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJFIqQgU/5Cdbe8sTPZ9S3Zy6iTyBRNP7cjZmD5LtlX0 jump-server-eu@embeddable.com
 ```
 
-### You'll need the following information 
+### You'll need the following information
+
 - Bastion user
 - Bastion host
 - Host and port of the database (must be accessible from Bastion host)

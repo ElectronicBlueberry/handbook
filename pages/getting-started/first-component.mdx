@@ -2,7 +2,7 @@
 
 Let's create a **dropdown component** to add to the dashboard that we [created earlier](/getting-started/first-embeddable).
 
-<ImageGrid width="50%" images={["/img/dropdown.png"]} />
+<ImageGrid width="50%" images={['/img/dropdown.png']} />
 
 <Steps>
 
@@ -77,20 +77,20 @@ const DropdownSelect: React.FC<Props> = ({ defaultValue, onChange, results, valu
 export default DropdownSelect;
 ```
 
-There is nothing Embeddable-specific here (except some convenient typescript type definitions).  This is just a standard React `select` component that fires the provided `onChange` listener if the user interacts with it.
-
+There is nothing Embeddable-specific here (except some convenient typescript type definitions). This is just a standard React `select` component that fires the provided `onChange` listener if the user interacts with it.
 
 ### Tell Embeddable about our component
 
 Inside the ExampleDropdown folder let's now create a file named `ExampleDropdown.emb.ts` (`src/embeddable.com/components/examples/ExampleDropdown/ExampleDropdown.emb.ts`).
 
 <Callout emoji="💡">
-The `.emb.ts` file is a special **companion file** that Embeddable looks for.  Embeddable will only pay attention to files that are reachable from `.emb.ts` files.
+  The `.emb.ts` file is a special **companion file** that Embeddable looks for. Embeddable will only
+  pay attention to files that are reachable from `.emb.ts` files.
 </Callout>
 
-This file tells Embeddable that this is a component that should be usable in the Embeddable platform.  It also tells Embeddable what input choices should be made available to the user of your component.
+This file tells Embeddable that this is a component that should be usable in the Embeddable platform. It also tells Embeddable what input choices should be made available to the user of your component.
 
-<ImageGrid width="50%" images={["/img/dropdown-inputs.png"]} />
+<ImageGrid width="50%" images={['/img/dropdown-inputs.png']} />
 
 Put the following content in the file:
 
@@ -98,11 +98,7 @@ Put the following content in the file:
 //
 // src/embeddable.com/components/examples/ExampleDropdown/ExampleDropdown.emb.ts
 //
-import {
-  EmbeddedComponentMeta,
-  Inputs,
-  defineComponent,
-} from '@embeddable.com/react';
+import { EmbeddedComponentMeta, Inputs, defineComponent } from '@embeddable.com/react';
 import { loadData, Value } from '@embeddable.com/core';
 
 import Component from './index'; // the React component we've defined above
@@ -111,52 +107,53 @@ export const meta = {
   name: 'ExampleDropdown', // this name must match the name of the file (before the `.emb.ts` part)
   label: 'Example Dropdown', // human readable name for the component
   category: 'Examples', // organise your components into categories
-  
+
   // the width and height (in px) that the component will default to when added to the canvas
-  defaultWidth: 320, 
+  defaultWidth: 320,
   defaultHeight: 50,
 
   // these are the inputs that the user of your component will be able to interact with
   inputs: [
     {
-      name: "ds",
-      type: "dataset", // this tells Embeddable to render a dropdown with the available datasets
-      label: "Dataset to display",
+      name: 'ds',
+      type: 'dataset', // this tells Embeddable to render a dropdown with the available datasets
+      label: 'Dataset to display',
       category: 'Configure chart',
-      description: 'The dataset to load the values from'
+      description: 'The dataset to load the values from',
     },
     {
-      name: "values",
-      type: "dimension", // this tells Embeddable to render a dropdown with the available dimensions
-      label: "Values",
+      name: 'values',
+      type: 'dimension', // this tells Embeddable to render a dropdown with the available dimensions
+      label: 'Values',
       required: true, // users of your component will be required to provide a value for this input.
       config: {
-        dataset: "ds", // this matches the `name` of the input above
+        dataset: 'ds', // this matches the `name` of the input above
       },
       category: 'Configure chart',
-      description: 'The choice of values'
+      description: 'The choice of values',
     },
     {
       name: 'defaultValue',
-      type: 'string', // this tells Embeddable to render a text input 
+      type: 'string', // this tells Embeddable to render a text input
       label: 'Default value',
       category: 'Configure chart',
-      description: 'The initial value'
+      description: 'The initial value',
     },
   ],
   events: [
     {
-      // this tells Embeddable that this component can fire an event.  
+      // this tells Embeddable that this component can fire an event.
       // This will mean that users of your component can define an Interaction for it (such as setting a variable).
       name: 'onChange',
       label: 'Change',
       properties: [
         {
           name: 'chosenValue', // tells Embeddable that the event will have a payload of one string, called `chosenValue`
-          type: 'string'
-        }
-      ]
-    }]
+          type: 'string',
+        },
+      ],
+    },
+  ],
 } as const satisfies EmbeddedComponentMeta;
 
 // `defineComponent` is what tells Embeddable that this is a component
@@ -167,20 +164,21 @@ export default defineComponent(Component, meta, {
       // load data from the database, based on the choice of inputs provided by the user of your component
       // and put the results into a `prop` called `results`
       results: loadData({
-        from: inputs.ds, 
-        select: [inputs.values] 
+        from: inputs.ds,
+        select: [inputs.values],
       }),
     };
   },
   events: {
     // this takes the `value` passed to `onChange` in the react component, and passes it to `chosenValue` which is defined in the `events` above.
-    onChange: (value) => ({ chosenValue: value || Value.noFilter() })
-  }
+    onChange: (value) => ({ chosenValue: value || Value.noFilter() }),
+  },
 });
 ```
 
 <Callout emoji="💡">
-Learn more about [defining components](/development/defining-components), [loading data](/development/loading-data) and [adding interactivity](/development/interactivity).
+  Learn more about [defining components](/development/defining-components), [loading
+  data](/development/loading-data) and [adding interactivity](/development/interactivity).
 </Callout>
 
 ### Test your component using `embeddable:dev`
@@ -193,14 +191,14 @@ Simply run `npm run embeddable:dev` from the root of your repo and it should spi
 
 Any changes you make to your **components** or **models** in this `embeddable:dev` workspace should cause the workspace to refresh and instantly show you the effect of the latest changes 🚀.
 
-<ImageGrid images={["/img/dropdown-inputs.png", "/img/dropdown.png"]} />
+<ImageGrid images={['/img/dropdown-inputs.png', '/img/dropdown.png']} />
 
 </Steps>
 
-Congratulations!  You've created your first Embeddable component 🎉.
+Congratulations! You've created your first Embeddable component 🎉.
 
 ## Next steps
 
 <CardGrid>
-  <LinkCard title="Import starter components" href="./install-starter-kit" icon=""/>
+  <LinkCard title="Import starter components" href="./install-starter-kit" icon="" />
 </CardGrid>

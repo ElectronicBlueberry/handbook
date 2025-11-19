@@ -1,8 +1,9 @@
 # Deploying Dashboard Versions
 
-[Saved dashboard versions](/dashboards/saving) are a powerful way to manage your **dashboard deployments**. They allow your [dashboard builders](/dashboards/introduction) to **save specific versions** of their dashboards (including the dashboard layout, the models, components, and Cube.js versions used) and you can control (via [API](/deployment/tokens-api)) which of these saved versions are shown to which group of users. 
+[Saved dashboard versions](/dashboards/saving) are a powerful way to manage your **dashboard deployments**. They allow your [dashboard builders](/dashboards/introduction) to **save specific versions** of their dashboards (including the dashboard layout, the models, components, and Cube.js versions used) and you can control (via [API](/deployment/tokens-api)) which of these saved versions are shown to which group of users.
 
 This allows you to:
+
 - **Test Safely** a new saved dashboard version in Development or Staging before going to Production.
 - **Roll Back** to previous versions if needed.
 - **Promote** versions through your development workflow using code (or [in our UI](/dashboards/publishing)).
@@ -21,11 +22,11 @@ Use this approach if you want your engineering team to have fine-grained control
 
 E.g:
 
- - You could release a new version to a subset of customers to get feedback before releasing to everyone.
+- You could release a new version to a subset of customers to get feedback before releasing to everyone.
 
- - You can also apply the version to your main codebase as part of a PR, and then promote that version through your different environments via your standard code promotion mechanism (e.g. merging into main branch)
+- You can also apply the version to your main codebase as part of a PR, and then promote that version through your different environments via your standard code promotion mechanism (e.g. merging into main branch)
 
-To do this, simply pass the exact version to `savedVersion` in the [Tokens API](/deployment/tokens-api), like this: 
+To do this, simply pass the exact version to `savedVersion` in the [Tokens API](/deployment/tokens-api), like this:
 
 ```ts
 fetch('https://api.<region>.embeddable.com/api/v1/security-token', {

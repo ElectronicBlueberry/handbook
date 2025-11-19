@@ -1,6 +1,6 @@
 # Embedding Dashboards
 
-Once you’ve **published** your dashboard in Embeddable, you can embed it in **any** website or web app - simply load our web component and pass in a security token. 
+Once you’ve **published** your dashboard in Embeddable, you can embed it in **any** website or web app - simply load our web component and pass in a security token.
 
 ## How it works
 
@@ -15,10 +15,7 @@ In the Embeddable builder, click **Publish**. This prepares the dashboard for em
 Add a `<script>` tag to your page to load the Embeddable custom element:
 
 ```html
-<script 
-  type="module"
-  src="https://embed.embeddable.com/js/v1/?region=<region>">
-</script>
+<script type="module" src="https://embed.embeddable.com/js/v1/?region=<region>"></script>
 ```
 
 This makes the `<em-beddable>` tag available anywhere on your page.
@@ -30,9 +27,7 @@ Learn more about `region` [here](/deployment/deployment-regions).
 Anywhere in your HTML, include:
 
 ```html
-<em-beddable
-  token="eyJhbGciOiJIUzI1NiJ9..."
-></em-beddable>
+<em-beddable token="eyJhbGciOiJIUzI1NiJ9..."></em-beddable>
 ```
 
 **`token`** is a **security token** from our [Tokens API](/deployment/tokens-api), which is used for row-level security and more.
@@ -49,15 +44,10 @@ The quickest way to test embedding is to use our test script [here](/getting-sta
 <!DOCTYPE html>
 <html>
   <head>
-    <script 
-      type="module"
-      src="https://embed.embeddable.com/js/v1/?region=<region>">
-    </script>
+    <script type="module" src="https://embed.embeddable.com/js/v1/?region=<region>"></script>
   </head>
   <body>
-    <em-beddable 
-      token="eyJhbGciOiJI..."
-    ></em-beddable>
+    <em-beddable token="eyJhbGciOiJI..."></em-beddable>
   </body>
 </html>
 ```
@@ -79,7 +69,7 @@ function Embeddable({ token }: { token: string }) {
 }
 
 export default function DashboardPage() {
-  const securityToken = 'eyJhbGciOiJI...'; 
+  const securityToken = 'eyJhbGciOiJI...';
   return <Embeddable token={securityToken} />;
 }
 ```
@@ -90,13 +80,8 @@ Or using JSX directly:
 export default function DashboardPage() {
   return (
     <>
-      <script
-        type="module"
-        src="https://embed.embeddable.com/js/v1/?region=<region>"
-      />
-      <em-beddable
-        token="eyJhbGciOiJI..."
-      />
+      <script type="module" src="https://embed.embeddable.com/js/v1/?region=<region>" />
+      <em-beddable token="eyJhbGciOiJI..." />
     </>
   );
 }
@@ -114,29 +99,24 @@ In Vue, you can place `<em-beddable>` in your templates. For instance:
 
 ```html
 <template>
-  <em-beddable
-    :token="token"
-  />
+  <em-beddable :token="token" />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+  import { ref, onMounted } from 'vue';
 
-const token = ref('eyJhbGciOiJI...');
+  const token = ref('eyJhbGciOiJI...');
 
-onMounted(() => {
-  // Load the web component script if needed, or include in index.html
-});
+  onMounted(() => {
+    // Load the web component script if needed, or include in index.html
+  });
 </script>
 ```
 
 Make sure you’ve loaded the script in your `index.html` (or another entry point) to define the custom element:
 
 ```html
-<script 
-  type="module"
-  src="https://embed.embeddable.com/js/v1/?region=<region>">
-</script>
+<script type="module" src="https://embed.embeddable.com/js/v1/?region=<region>"></script>
 ```
 
 Learn more about `region` [here](/deployment/deployment-regions).
@@ -147,7 +127,7 @@ Learn how to generate a `token` [here](/deployment/tokens-api).
 
 ## Common Pitfalls
 
-- **Security Token**: Must be retrieved server-side to avoid exposing secrets. See our [Tokens API](/deployment/tokens-api) docs.  
+- **Security Token**: Must be retrieved server-side to avoid exposing secrets. See our [Tokens API](/deployment/tokens-api) docs.
 
 ## Complete Working Example
 

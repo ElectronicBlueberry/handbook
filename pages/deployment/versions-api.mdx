@@ -2,7 +2,7 @@
 
 The **Versions API** allows you to programmatically list the last thirty saved versions of a specific dashboard (Embeddable) in your workspace. This is useful for managing deployments, rolling back changes, or promoting versions through your development workflow.
 
-<Bruno/>
+<Bruno />
 
 ## Endpoint
 
@@ -18,9 +18,9 @@ fetch('https://api.<region>.embeddable.com/api/v1/embeddables/{embeddableId}/sav
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${apiKey}` // Keep your API key secure
-  }
+    Accept: 'application/json',
+    Authorization: `Bearer ${apiKey}`, // Keep your API key secure
+  },
 })
   .then((res) => res.json())
   .then(console.log);
@@ -69,4 +69,3 @@ fetch('https://api.<region>.embeddable.com/api/v1/embeddables/{embeddableId}/sav
 
 - **[Token Targeting](/deployment/tokens-api)**: How to use saved versions in your Embeddable tokens.
 - **[Promotion Strategies](/deployment/versions#savedversion-strategies)**: Best practices for managing and promoting dashboard
-

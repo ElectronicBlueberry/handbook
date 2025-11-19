@@ -1,11 +1,20 @@
 # Building a Custom Theme with Vanilla Components
 
 <Callout emoji="💡">
-     this document is transcribed from the video and therefor at times makes reference to things you can see on screen. Where necessary, screenshots have been included.
+  this document is transcribed from the video and therefor at times makes reference to things you
+  can see on screen. Where necessary, screenshots have been included.
 </Callout>
 
 <div style={{ margin: '30px 0', width: '100%', paddingTop: '56.25%', position: 'relative' }}>
-  <iframe style={{width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} src="https://www.youtube.com/embed/cxSbkzeobMc?si=k0ZZUIKcIlX7TzdK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe
+    style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+    src="https://www.youtube.com/embed/cxSbkzeobMc?si=k0ZZUIKcIlX7TzdK"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
 </div>
 
 Hi everyone! Today we’re going to take a look at theming in Vanilla Components. Specifically, we’ll check out an example of what you can do with themes, and then we’ll implement a new theme ourselves. It’s pretty quick and easy, and should take about ten minutes.
@@ -64,18 +73,18 @@ import nebula from './src/themes/nebula.theme';
 Once you’ve done that, below the check for the Kawaii theme, add a similar check for Nebula, like this:
 
 ```tsx
-  if (clientContext?.theme === 'nebula') {
-    return defineTheme(parentTheme, nebula) as Theme;
-  }
+if (clientContext?.theme === 'nebula') {
+  return defineTheme(parentTheme, nebula) as Theme;
+}
 ```
 
-You’ll probably note that we’re not actually checking for a default theme but are still getting it in the builder. That’s because the `parentTheme` value comes from Vanilla Components and includes the entire default theme. The custom `defineTheme` function provided by the Embeddable SDK merges the two objects, overwriting any values in the default theme with those that exist in the partial theme. This means your partial theme can be as simple as changing a single font family value, or as complicated as replacing the entire default theme. In this case, we’re going to make *some* changes, but we’ll still be inheriting a lot from the default theme.
+You’ll probably note that we’re not actually checking for a default theme but are still getting it in the builder. That’s because the `parentTheme` value comes from Vanilla Components and includes the entire default theme. The custom `defineTheme` function provided by the Embeddable SDK merges the two objects, overwriting any values in the default theme with those that exist in the partial theme. This means your partial theme can be as simple as changing a single font family value, or as complicated as replacing the entire default theme. In this case, we’re going to make _some_ changes, but we’ll still be inheriting a lot from the default theme.
 
 Go ahead and save this file, and let’s jump back to our Embeddable builder. If we check out our dropdown now (you might need to refresh), you can see that the Nebula theme is now available, and if we switch to it, our chart colors change. Cool!
 
 Now let’s flesh out that theme a bit. Switch back to `/src/themes/nebula.theme.ts` and let’s get building. We want a nice sci-fi look for Nebula, so we’re going to darken the theme, square off some edges, and make a few other adjustments. For the sake of tutorial brevity, I’m going to run through this pretty quickly, but don’t worry, there’s a full text transcription of this video, complete with code snippets, linked in the description.
 
-The first thing I want to change is the container that wraps most of the charts and graphs in our dashboard. Within your theme object, but *not* within the `charts` property, add this code:
+The first thing I want to change is the container that wraps most of the charts and graphs in our dashboard. Within your theme object, but _not_ within the `charts` property, add this code:
 
 ```tsx
   container: {
@@ -97,7 +106,7 @@ Now let’s adjust our Bar Chart a bit - squaring off the bars and upping the fo
     },
 ```
 
-Save the file, watch the builder rebuild, and you’ve got … well, a pretty ugly dashboard right now. No worries, it’s a work in progress. I’m going to do a big chunk of code now, our entire `controls` property for the theme, *except* the date picker. We’ll handle that one in a minute. Below the `container` property, add this code:
+Save the file, watch the builder rebuild, and you’ve got … well, a pretty ugly dashboard right now. No worries, it’s a work in progress. I’m going to do a big chunk of code now, our entire `controls` property for the theme, _except_ the date picker. We’ll handle that one in a minute. Below the `container` property, add this code:
 
 ```tsx
   controls: {
@@ -206,18 +215,18 @@ const { token } = useGetToken();
 Let’s write the embed code. I’ve already included the necessary script tag in the top-level `index.html` file so all we need to do is write a custom component to add our Embeddable to a React app, like this:
 
 ```tsx
-	type EmbeddableProps = {
-		token: string;
-		clientContext?: string;
-	};
+type EmbeddableProps = {
+  token: string;
+  clientContext?: string;
+};
 
-	const Embeddable: React.FC<EmbeddableProps> = (props) => {
-		const { token, clientContext } = props;
-		return React.createElement('em-beddable', {
-			'token': token,
-			'client-context': clientContext,
-		});
-	};
+const Embeddable: React.FC<EmbeddableProps> = (props) => {
+  const { token, clientContext } = props;
+  return React.createElement('em-beddable', {
+    token: token,
+    'client-context': clientContext,
+  });
+};
 ```
 
 And then add that component in between our header and footer, like this:
@@ -253,7 +262,7 @@ It’s using the default theme, though, and that just won’t do. We need to upd
 			<Footer />
 ```
 
-Save and … *voila*! We’ve got our Embeddable dashboard running with our custom Nebula theme.
+Save and … _voila_! We’ve got our Embeddable dashboard running with our custom Nebula theme.
 
 ![image.png](/img/tutorials/custom-theme/image%204.png)
 

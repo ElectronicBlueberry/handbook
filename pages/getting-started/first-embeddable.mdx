@@ -9,53 +9,47 @@ You're ready to start building! Let’s walk through creating a **basic dashboar
 <Steps>
 
 ### **Create a New Embeddable**
+
 - On your workspace homepage, click **Create new Embeddable** to create a fresh dashboard.
 
 ### **Add a Text Component**
+
 1. Click **Add component** (top right).
 2. Scroll down and choose the **Hello World** component.
 3. Fill in **Title** and **Body**, then hit **Save**.
 
-<VideoComponent
-    src="/video/add-text-component.mp4"
-    width="1250"
-    height="872"
-/>
+<VideoComponent src="/video/add-text-component.mp4" width="1250" height="872" />
 
 <Callout emoji="💡">
-  The available components come from [the code repository you downloaded in Part One](/getting-started/download-repo) and will be augmented in a later step by bringing in additional components we provide via an NPM import.
+  The available components come from [the code repository you downloaded in Part
+  One](/getting-started/download-repo) and will be augmented in a later step by bringing in
+  additional components we provide via an NPM import.
 </Callout>
 
 ### **Add a Dataset**
+
 1. In the **Datasets** panel (bottom right), click the **+** icon.
 2. Name your dataset.
 3. Select **My customers** (or any other sample data model), then **Save**.
 
-<VideoComponent
-    src="/video/add-dataset.mp4"
-    width="1250"
-    height="872"
-/>
+<VideoComponent src="/video/add-dataset.mp4" width="1250" height="872" />
 
 ### **Add a Pie Chart**
+
 1. Click **Add component** again. Pick **Pie Chart**.
 2. In the edit panel, set **Dataset to display** to the dataset you just created.
 3. Select your preferred **Slice** and **Metric**.
 4. **Save** and position your pie chart on the canvas.
 
-<VideoComponent
-    src="/video/add-pie-chart.mp4"
-    width="1250"
-    height="872"
-/>
+<VideoComponent src="/video/add-pie-chart.mp4" width="1250" height="872" />
 
 ### **Add Interactivity**
 
-It's really simple to make your dashboards interactive. 
+It's really simple to make your dashboards interactive.
 
 Let's add a **search input** that filters the data. Watch and follow this quick video to see how:
 
-<ExternalVideo src="https://www.loom.com/embed/041f9947644245d5bed940a2d46bc6ca?sid=b3d41e99-9f69-440c-8e93-4174e95c0f60"/>
+<ExternalVideo src="https://www.loom.com/embed/041f9947644245d5bed940a2d46bc6ca?sid=b3d41e99-9f69-440c-8e93-4174e95c0f60" />
 
 ### Embed your dashboard
 
@@ -63,26 +57,26 @@ Now let's test Embedding your dashboard in a simple HTML page.
 
 1. Click **'Save version'** at the top of your dashboard.
 
-<ImageGrid width='40%' images={['/img/save-version-button.png']} />
+<ImageGrid width="40%" images={['/img/save-version-button.png']} />
 
 2. Enter a **description** of your changes so far and click **'Save new version'** to save your dashboard as it is.
 
-<ImageGrid width='75%' images={['/img/dashboard-versions-save.png']} />
+<ImageGrid width="75%" images={['/img/dashboard-versions-save.png']} />
 
 3. Click **'Publish'** to open the Publish modal.
 
-<ImageGrid width='75%' images={['/img/dashboard-versions-save-success.png']} />
+<ImageGrid width="75%" images={['/img/dashboard-versions-save-success.png']} />
 
 4. Select **'Production'** and then click **'Publish'** again to publish your newly saved version to the Production environment.
 
-<ImageGrid width='75%' images={['/img/publish-dialog.png']} />
+<ImageGrid width="75%" images={['/img/publish-dialog.png']} />
 
 5. Before closing the **Publish modal**, grab your **API Key** and **Embeddable ID** from the **'How to embed'** section at the bottom of the modal.
 
-<ImageGrid width='75%' images={['/img/how-to-embed.png']} />
+<ImageGrid width="75%" images={['/img/how-to-embed.png']} />
 
-6. In your code repo, open `embedding-preview.cjs` ([here](https://github.com/embeddable-hq/embeddable-boilerplate/blob/main/src/embeddable.com/scripts/embedding-preview.cjs)).  
-7. Update the `BASE_URL`, `API_KEY`, and `EMBEDDABLE_ID` with the values from your dashboard.  
+6. In your code repo, open `embedding-preview.cjs` ([here](https://github.com/embeddable-hq/embeddable-boilerplate/blob/main/src/embeddable.com/scripts/embedding-preview.cjs)).
+7. Update the `BASE_URL`, `API_KEY`, and `EMBEDDABLE_ID` with the values from your dashboard.
 8. Run:
    ```bash
    node src/embeddable.com/scripts/embedding-preview.cjs
@@ -98,8 +92,6 @@ Congratulations! You've built your first Embeddable - now you're well on your wa
 ## Next Steps
 
 <CardGrid>
-  <LinkCard title="Build your own component" href="/getting-started/first-component" icon=""/> 
-  <LinkCard title="Import starter components" href="/getting-started/install-starter-kit" icon=""/> 
+  <LinkCard title="Build your own component" href="/getting-started/first-component" icon="" />
+  <LinkCard title="Import starter components" href="/getting-started/install-starter-kit" icon="" />
 </CardGrid>
-
-
