@@ -34,6 +34,8 @@ Run `pnpm i` to install the dependencies.
 
 Then, run `pnpm dev` to start the development server and visit `https://localhost:3000`.
 
+Finally, run `pnpm format` to format your changes with prettier.
+
 ## Remove Cookie banner
 
 The cookie banner will constantly appear.
