@@ -1,8 +1,8 @@
 {
-    "quick-start-guide": "0: Quick start guide",
-    "download-repo": "1: Set up your repo",
-    "set-up-your-workspace": "2: Set up your workspace",
-    "first-embeddable": "3: Build an Embeddable",
-    "theme-components": "4. Switch the theme",
-    "first-component": "5: Build a component"
+  "quick-start": "1: Quick Start",
+  "create-a-dashboard": "2: Create a Dashboard",
+  "build-your-first-component": "3: Build Your First Component",
+  "create-a-theme": "4: Create a Theme",
+  "embed-dashboard": "5: Embed Your Dashboard",
+  "next-steps": "6: Next Steps"
 }
