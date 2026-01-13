@@ -1,0 +1,89 @@
+This step-by-step guide walks you through the **core-concepts** of Embeddable.
+
+## Prerequisites
+
+Before starting on this guide, make sure you have the following software installed:
+
+- A code-editor suitable for JavaScript such as [VsCode](https://code.visualstudio.com/)
+- The latest LTS version of [NodeJS](https://nodejs.org/en/download)
+- The version-control system [Git](https://git-scm.com/install/)
+
+This guide also assumes a basic understanding of the programming language JavaScript.
+
+## Setting Up The Boilerplate
+
+The [boilerplate repository](https://github.com/embeddable-hq/remarkable-pro-boilerplate) is a starting point for this guide. It includes the full suite of (Remarkable Pro components)[https://github.com/embeddable-hq/remarkable-pro], our production-ready component library.
+
+<Steps>
+
+### Getting the Code
+
+Download our boilerplate repository [here](https://github.com/embeddable-hq/remarkable-pro-boilerplate) (`<> Code` -> `Download ZIP`), or clone it using the git command:
+
+```sh
+git clone https://github.com/embeddable-hq/remarkable-pro-boilerplate
+```
+
+Open the folder in a code-editor.
+
+### Installing Dependencies
+
+In a terminal (using VsCode: Menu Bar -> Terminal -> New Terminal), run:
+
+```sh
+npm i
+```
+
+to install all required dependencies.
+
+### Set Your Region
+
+In the `embeddable.config.ts` file, set either:
+
+```ts
+region: "EU",
+```
+
+**or**
+
+```ts
+region: "US",
+```
+
+depending on [your region](https://docs.embeddable.com/deployment/deployment-regions). Make sure to save these changes before continuing.
+
+</Steps>
+
+## Connecting to Your Embeddable Workspace
+
+Follow these three steps to complete basic set-up.
+
+<Steps>
+
+### Logging in
+
+To connect to embeddable, run the terminal command:
+
+```sh
+npm run embeddable:login
+```
+
+### Building
+
+Next, bundle the boilerplate repository, so that we can use it in an embeddable dashboard, by running:
+
+```sh
+npm run embeddable:build
+```
+
+### Pushing
+
+Finally, we have to send our code-bundle to Embeddable. To do so run:
+
+```sh
+npm run embeddable:push
+```
+
+</Steps>
+
+todo: go to dashboard and see components. decide on how much to write here when next section is complete.
