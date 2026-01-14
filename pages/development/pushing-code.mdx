@@ -2,11 +2,11 @@
 
 To make your [data models](/data-modeling/defining-models) and [components](/development/defining-components) available in the dashboard builder, you need to push them to your Embeddable Workspace.
 
-You can do this by running the [**push command**](/development/pushing-code#push-command), which, by default, pushes both data models and components. 
+You can do this by running the [**push command**](/development/pushing-code#push-command), which, by default, pushes both data models and components.
 
 ## Controlling what gets pushed
 
-If you store your models and components in [separate repos](/data-modeling/getting-setup#2-storing-models-separately), you can push them independently. 
+If you store your models and components in [separate repos](/data-modeling/getting-setup#2-storing-models-separately), you can push them independently.
 
 In your component repo, in `embeddable.config`, simply set the following:
 
@@ -30,7 +30,7 @@ During a push:
 
 ### Running embeddable:dev
 
-When building locally using [`embeddable:dev`](/development/local-environment): 
+When building locally using [`embeddable:dev`](/development/local-environment):
 
 - If **`pushModels`** is false, local development uses models from your online workspace.
 - If **`pushComponents`** is false, it uses components from your online workspace.
@@ -40,7 +40,7 @@ When building locally using [`embeddable:dev`](/development/local-environment):
 
 In the top menu in the dashboard builder you can use the version pickers to choose the **models version** and **components version**. Publishing a dashboard uses whichever models and components versions are currently selected when you save a version. A version is only live **once published**.
 
-<ImageGrid images={["/img/pushCode-min.png"]}/>
+<ImageGrid images={["/img/pushCode-min.png"]} />
 
 ## Push command
 
@@ -60,10 +60,23 @@ npm run embeddable:push
 
 If you have multiple workspaces, you will be prompted to select which workspace you want to push to.
 
-## Pushing using your API Key
+You can also push your models and components using your API key, which is especially useful for integrating into your **CI/CD pipeline**. You can also pass an email explicitly, and attach a push message that cen be seen in your Embeddable Workspace.
 
-You can also push your models and components using your API key, which is especially useful for integrating into your **CI/CD pipeline**:
+```bash
+npm run embeddable:push -- --api-key <API Key> --email <Email> --message <Message>
+```
 
-<CardGrid>
-  <LinkCard title="Push the code bundle" href="/getting-started/set-up-your-workspace#push-the-code-bundle" icon=""/> 
-</CardGrid> 
+For example:
+
+```bash
+npm run embeddable:push -- --api-key c26624b --email my@email.com --message "My first components and models"
+```
+
+<Callout emoji="💡">
+If you're using Powershell, you may need to put the -- in double quotes, like so:
+
+```bash
+npm run embeddable:push "--" --api-key c26624b --email my@email.com --message "My first components and models"
+```
+
+</Callout>
