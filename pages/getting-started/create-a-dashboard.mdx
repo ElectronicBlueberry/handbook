@@ -47,7 +47,7 @@ Build your dashboard by adding components to the canvas.
 
 ### Add Interactivity
 
-Adding interactivity is quick and easy.
+Interactivity allows user interaction with one component to affect the data shown in another component. E.g. choosing a value from a dropdown can, for example, affect the data loaded in the charts in the rest of the dashboard.
 
 <VideoComponent
   src="/video/Add-interactivity-remarkable.mp4"
@@ -55,7 +55,7 @@ Adding interactivity is quick and easy.
   height="746"
 />
 
-1. Click **Add component**, choose **Date Range Select Field**, then hit **Save**.
+1. Click **Add component**, choose **Date Range Select Field**, then hit **Save** to add it to your canvas.
 
 <Callout emoji="⚡️">
   In the right-hand Variables panel in the Builder, you’ll see a new variable
@@ -63,10 +63,11 @@ Adding interactivity is quick and easy.
   components (like date pickers) and can be passed around the dashboard.
 </Callout>
 
+Let's now link that variable to our Donut Chart (as shown in video above, and described below).
+
 2. Edit your **Donut Chart**.
 3. Click **Filter** (under the Dataset input) and, from the dropdown, choose the **Signed up at** Dimension.
-4. Next to the filter operator (“In date range”), click the **link** icon.
-5. Select the **date-range value** variable, then hit **Save**.
+4. Next to the filter operator (“In date range”), click the **link** icon, select the **date-range value** variable, then hit **Save**.
 
 </Steps>
 

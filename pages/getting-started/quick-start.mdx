@@ -14,7 +14,10 @@ This guide also assumes a basic understanding of the programming language JavaSc
 
 ## Setting Up The Boilerplate
 
-The [boilerplate repository](https://github.com/embeddable-hq/remarkable-pro-boilerplate) is a starting point for this guide. It includes the full suite of (Remarkable Pro components)[https://github.com/embeddable-hq/remarkable-pro], our production-ready component library.
+The [boilerplate repository](https://github.com/embeddable-hq/remarkable-pro-boilerplate) is a starting point for this guide. It includes:
+
+- the full suite of (Remarkable Pro components)[https://github.com/embeddable-hq/remarkable-pro], our production-ready component library.
+- a set of sample data models for you to play with.
 
 <Steps>
 
@@ -40,7 +43,7 @@ to install all required dependencies.
 
 ### Set Your Region
 
-In the `embeddable.config.ts` file, set either:
+In your [embeddable.config.ts](https://github.com/embeddable-hq/remarkable-pro-boilerplate/blob/main/embeddable.config.ts#L7-L15) file, depending on [your region](/deployment/deployment-regions), set either:
 
 ```ts
 region: "EU",
@@ -64,11 +67,13 @@ Follow these three steps to complete basic set-up.
 
 ### Logging in
 
-To connect to embeddable, run the terminal command:
+To log in to your embeddable workspace, run the terminal command:
 
 ```sh
 npm run embeddable:login
 ```
+
+Make sure the region was set correctly in the [previous step](/getting-started/quick-start#set-your-region).
 
 ### Building
 
@@ -86,7 +91,7 @@ Finally, we have to send our code-bundle to Embeddable. To do so run:
 npm run embeddable:push
 ```
 
-To learn more about the push command and it's options, see [Push command](/development/pushing-code#push-command)
+To learn more about the push command and it's options, see [Push Command](/development/pushing-code#push-command)
 
 </Steps>
 
