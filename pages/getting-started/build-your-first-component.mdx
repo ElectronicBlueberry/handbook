@@ -1,4 +1,4 @@
-# Build your own component
+# Build your first component
 
 Embeddable ships with [Remarkable Pro](/component-libraries/remarkable-pro/introduction), a full suite of components, but you can build anything you need on top.
 
@@ -8,7 +8,7 @@ Every component has two parts: a standard React component and an Embeddable-spec
 
 ### Define your React component
 
-1. Inside `src/embeddable.com` in your [repo](/getting-started/quick-start#setting-up-the-boilerplate), create a **folder** called `components`.
+1. Inside `src/embeddable.com` in your [repo](/getting-started/quick-start#setting-up-the-boilerplate), create a folder called `components`.
 2. Inside this folder, create a new folder called `ExampleDropdown` and a file called `index.tsx`.
 3. Paste the code below and save.
 
@@ -184,7 +184,7 @@ export default defineComponent(Component, meta, {
 
 `npm run embeddable:dev`
 
-This spins up a **local workspace** that uses your _local components and models_ ([learn more](/development/local-environment)).
+This spins up a **local workspace** that uses your local components and models ([learn more](/development/local-environment)).
 
 ### Add your component to a dashboard
 
@@ -197,7 +197,7 @@ This spins up a **local workspace** that uses your _local components and models_
 
 <ImageGrid images={["/img/dropdown-inputs.png", "/img/dropdown.png"]} />
 
-Any changes you make to your **components** or **data models** while developing locally and running `embeddable:dev` should cause the workspace to refresh and instantly show you the effect of those changes 🚀.
+Any changes you make to your **components** or **data models** while developing locally and running `embeddable:dev` cause the workspace to refresh and instantly show you the effect of those changes 🚀.
 
 </Steps>
 
@@ -208,4 +208,10 @@ npm run embeddable:build
 npm run embeddable:push
 ```
 
-Learn more about [defining components](/development/defining-components), [loading data](/development/loading-data) and [adding interactivity](/development/interactivity).
+<Callout emoji="💡">
+  Learn more about [defining components](/development/defining-components),
+  [loading data](/development/loading-data) and [adding
+  interactivity](/development/interactivity).
+</Callout>
+
+Next,
